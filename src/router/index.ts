@@ -25,11 +25,6 @@ const router = createRouter({
       component: () => import('../views/register.vue'),
     },
     {
-      path: '/landingspage',
-      name: 'landingspage',
-      component: () => import('../views/landingspage.vue'),
-    },
-    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue'),

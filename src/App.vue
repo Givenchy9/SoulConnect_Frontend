@@ -21,8 +21,8 @@ const excludedPaths = [
   '/settings/abonnoment',
   '/settings/afbeeldingen',
   '/dashboard',
-  '/users_admin',
-  '/abonnoment_admin'
+  '/dashboard/users_admin',
+  '/dashboard/abonnoment_admin'
 ]
 
 const showHeader = computed(() => {

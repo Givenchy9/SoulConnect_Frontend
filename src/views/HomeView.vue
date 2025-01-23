@@ -37,7 +37,7 @@ import Slideshow from "@/components/slideshow.vue";
       </div>
     </div>
     <Slideshow />
-    <div class="relative float-right w-1/4 h-screen mx-12 backdrop-blur-2xl border-2 h-1/2 mt-40">
+    <div class="relative float-right w-1/4 h-1/2 mx-12 backdrop-blur-2xl border-2 mt-40">
       <div class="p-12">
         <p class="text-center text-2xl">Already an account?</p>
         <RouterLink to="/login"

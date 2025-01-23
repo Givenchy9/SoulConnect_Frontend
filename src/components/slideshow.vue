@@ -1,5 +1,5 @@
 <template>
-    <div class="flex absolute top-0 left-0 w-full h-full z-0">
+    <div class="flex theslideshow absolute top-0 left-0 w-full h-full z-0">
         <!-- First Slideshow -->
         <div class="slideshow relative h-screen w-1/4 overflow-hidden">
             <!-- Slides Wrapper -->
@@ -193,5 +193,12 @@ export default {
 .w-1\4 {
     width: 25%;
     /* Each slideshow will take 25% of the available width */
+}
+
+@media (max-width: 800px) {
+    .theslideshow {
+        height: 100vh;
+        display: none;
+    }
 }
 </style>

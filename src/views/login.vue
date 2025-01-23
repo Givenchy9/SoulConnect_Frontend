@@ -39,8 +39,8 @@
             <p class="mt-10 text-center text-sm text-white">
                 Geen account?
                 {{ ' ' }}
-                <a href="/register" class="font-semibold leading-6 text-kleur hover:text-kleur2">Maak hier
-                    een account</a>
+                <RouterLink to="/register" class="font-semibold leading-6 text-kleur hover:text-kleur2">Maak hier
+                    een account</RouterLink>
             </p>
         </div>
     </div>

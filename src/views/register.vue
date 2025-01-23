@@ -46,6 +46,12 @@
       <button type="submit" class="w-full mt-6 py-2 bg-koranje font-bold rounded-lg hover:bg-doranje">
         Volgende
       </button>
+      <p class="mt-10 text-center text-sm text-white">
+        Heb je al een account?
+        {{ ' ' }}
+        <RouterLink to="/login" class="font-semibold leading-6 text-kleur hover:text-kleur2">Log hier in
+        </RouterLink>
+      </p>
     </form>
 
     <!-- Stap 2 -->
@@ -159,6 +165,8 @@ body {
 </style>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
   data() {
     return {

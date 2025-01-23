@@ -14,7 +14,7 @@ const route = useRoute()
 const excludedPaths = [
   '/login',
   '/register',
-  '/home',
+  '/',
   '/settings',
   '/settings/profile',
   '/settings/edit',

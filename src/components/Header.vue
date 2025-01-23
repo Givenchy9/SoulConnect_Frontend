@@ -53,7 +53,7 @@
     <!-- Dropdown menu binnen hamburger menu -->
     <div v-if="dropdownOpen" class="bg-white text-black shadow-lg mt-2 w-full rounded-md">
       <RouterLink to="/settings" class="block px-4 py-2 hover:bg-gray-200">Settings</RouterLink>
-      <RouterLink to="/logout" class="block px-4 py-2 hover:bg-gray-200">Logout</RouterLink>
+      <RouterLink to="/login" class="block px-4 py-2 hover:bg-gray-200">Logout</RouterLink>
     </div>
   </div>
 </template>

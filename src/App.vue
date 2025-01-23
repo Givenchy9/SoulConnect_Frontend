@@ -1,5 +1,5 @@
 <template>
-  <Header v-if="showHeader" /> 
+  <Header v-if="showHeader" />
   <RouterView />
 </template>
 
@@ -8,10 +8,24 @@ import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import Header from '@/components/Header.vue'
 
-
 const route = useRoute()
 
+// List of paths where the header should not be shown
+const excludedPaths = [
+  '/login',
+  '/register',
+  '/home',
+  '/settings',
+  '/settings/profile',
+  '/settings/edit',
+  '/settings/abonnoment',
+  '/settings/afbeeldingen',
+  '/dashboard',
+  '/users_admin',
+  '/abonnoment_admin'
+]
+
 const showHeader = computed(() => {
-  return !['login', 'register', 'home', 'settings', 'dashboard'  ].includes(route.name as string)
+  return !excludedPaths.some(excludedPath => route.path.startsWith(excludedPath))
 })
 </script>

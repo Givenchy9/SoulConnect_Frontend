@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="box flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div
             class="backdrop-blur-3xl shadow-xl bg-transparent-10 p-4 rounded-xl mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -51,6 +51,18 @@ body {
     background-image: url("https://smarative.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511634829096-045a111727eb%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwxMTc3M3wwfDF8c2VhcmNofDd8fGZyb3N0ZWQlMjBnbGFzc3xlbnwwfHx8fDE2MzMzNTc0MTU%26ixlib%3Drb-1.2.1%26q%3D80%26w%3D2000&w=3840&q=75");
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+@media (max-width: 800px) {
+    body {
+        background-image: url("https://smarative.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511634829096-045a111727eb%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwxMTc3M3wwfDF8c2VhcmNofDd8fGZyb3N0ZWQlMjBnbGFzc3xlbnwwfHx8fDE2MzMzNTc0MTU%26ixlib%3Drb-1.2.1%26q%3D80%26w%3D2000&w=3840&q=75");
+        background-repeat: no-repeat;
+        background-size: 1510px;
+    }
+
+    .box {
+        padding-top: 120px;
+    }
 }
 </style>
 

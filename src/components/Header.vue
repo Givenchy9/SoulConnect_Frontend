@@ -8,7 +8,7 @@
     </div>
 
     <div class="space-x-6 flex-grow justify-center lg:flex hidden">
-      <RouterLink to="/" class="text-white text-lg hover:underline">Homepage</RouterLink>
+      <RouterLink to="/homepage" class="text-white text-lg hover:underline">Homepage</RouterLink>
       <RouterLink to="/chat" class="text-white text-lg hover:underline">Chat</RouterLink>
       <RouterLink to="/matches" class="text-white text-lg hover:underline">Matches</RouterLink>
       <RouterLink to="/search" class="text-white text-lg hover:underline">Search</RouterLink>
@@ -34,7 +34,7 @@
   </nav>
 
   <!-- Hamburger menu voor mobiel -->
-  <div v-if="mobileMenuOpen" class="lg:hidden absolute top-28 left-0 w-full bg-orange-500 opacity-80 px-8 py-4">
+  <div v-if="mobileMenuOpen" class="lg:hidden relative left-0 w-full bg-orange-500 opacity-80 px-8 py-4">
     <RouterLink to="/" class="block text-white text-lg py-2">Homepage</RouterLink>
     <RouterLink to="/chat" class="block text-white text-lg py-2">Chat</RouterLink>
     <RouterLink to="/matches" class="block text-white text-lg py-2">Matches</RouterLink>

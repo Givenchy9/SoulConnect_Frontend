@@ -13,16 +13,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      meta: { hideHeader: true },
       component: HomeView,
     },
     {
       path: '/login',
       name: 'login',
+      meta: { hideHeader: true },
       component: () => import('../views/login.vue'),
     },
     {
       path: '/register',
       name: 'register',
+      meta: { hideHeader: true },
       component: () => import('../views/register.vue'),
     },
     {
@@ -53,6 +56,7 @@ const router = createRouter({
     {
       path: '/settings',
       name: 'settings',
+      meta: { hideHeader: true },
       component: () => import('../views/user/settings.vue'),
       children: [
         {
@@ -76,6 +80,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
+      meta: { hideHeader: true },
       component: () => import('../views/admin/dashboard/dashboard.vue'),
       children: [
         {

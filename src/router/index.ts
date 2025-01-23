@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import profile from '../views/user/settings/profile.vue'
 import edit from '../views/user/settings/edit.vue'
 import abonnoment from '../views/user/settings/abonnoment.vue'
+import afbeeldingen from '../views/user/settings/afbeeldingen.vue'
 import users_admin from '../views/admin/dashboard/users_admin.vue'
 import abonnoment_admin from '../views/admin/dashboard/abonnoment_admin.vue'
 
@@ -65,6 +66,10 @@ const router = createRouter({
         {
           path: 'abonnoment',
           component: abonnoment,
+        },
+        {
+          path: 'afbeeldingen',
+          component: afbeeldingen,
         },
       ],
     },

@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         koranje: 'rgb(255, 128, 0)',
+        doranje:'rgb(204, 102, 0)',
         kleur: 'rgb(255, 60, 0)',
         kleur2: 'rgb(190, 44, 0)'
       }

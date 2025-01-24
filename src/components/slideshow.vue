@@ -13,10 +13,10 @@
             </div>
 
             <!-- Navigation Indicators -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            <!-- <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                 <button v-for="(slide, index) in slides1" :key="index" @click="goToSlide1(index)"
                     class="w-3 h-3 rounded-full" :class="index === currentSlide1 ? 'bg-white' : 'bg-gray-500'"></button>
-            </div>
+            </div> -->
         </div>
 
         <!-- Second Slideshow -->
@@ -32,10 +32,10 @@
             </div>
 
             <!-- Navigation Indicators -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            <!-- <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                 <button v-for="(slide, index) in slides2" :key="index" @click="goToSlide2(index)"
                     class="w-3 h-3 rounded-full" :class="index === currentSlide2 ? 'bg-white' : 'bg-gray-500'"></button>
-            </div>
+            </div> -->
         </div>
 
         <!-- Third Slideshow -->
@@ -51,10 +51,10 @@
             </div>
 
             <!-- Navigation Indicators -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            <!-- <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                 <button v-for="(slide, index) in slides3" :key="index" @click="goToSlide3(index)"
                     class="w-3 h-3 rounded-full" :class="index === currentSlide3 ? 'bg-white' : 'bg-gray-500'"></button>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -116,13 +116,13 @@ export default {
 
         // Start the automatic slideshow for each one
         const startSlideshow1 = () => {
-            slideInterval1.value = setInterval(nextSlide1, 1000);
+            slideInterval1.value = setInterval(nextSlide1, 2000);
         };
         const startSlideshow2 = () => {
-            slideInterval2.value = setInterval(nextSlide2, 2000);
+            slideInterval2.value = setInterval(nextSlide2, 3000);
         };
         const startSlideshow3 = () => {
-            slideInterval3.value = setInterval(nextSlide3, 3000);
+            slideInterval3.value = setInterval(nextSlide3, 4000);
         };
 
         // Stop the slideshow to prevent memory leaks

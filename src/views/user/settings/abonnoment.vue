@@ -1,7 +1,7 @@
 <template>
-  <div class="box2 m-auto">
+  <div class="box m-auto">
     <!-- Subscription Options (Visible when user is not subscribed) -->
-    <div v-if="!isSubscribed" class="box2 flex mx-auto mt-8 px-12 gap-6 ml-28 mt-28">
+    <div v-if="!isSubscribed" class="sub flex mx-auto mt-8 px-12 gap-6 ml-28 mt-28">
       <!-- First Tier -->
       <div class="p-6 bg-white rounded-lg shadow-md">
         <h3 class="text-lg font-semibold text-kleur">{{ tiers[0].name }}</h3>
@@ -209,7 +209,7 @@ function cancelSubscription() {
 
 <style>
 @media (max-width: 800px) {
-  .box2 {
+  .sub {
     background-image: none;
     display: block;
     margin-left: 0;

@@ -1,5 +1,5 @@
 <template>
-  <div class="box flex justify-center items-center mt-16 w-full">
+  <div class="boxz flex justify-center items-center mt-16 w-full">
     <div
       class="w-full mx-20 bg-kleur rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800">
       <div class="p-12 border-b">
@@ -84,12 +84,15 @@ export default {
 </script>
 <style>
 @media (max-width: 800px) {
-  .box {
+  .boxz {
     /* margin-top: 10px;
     padding-top: 100px; */
     width: 100%;
+    height: 80vh;
+    margin-left: -81px;
     padding-left: 10px;
     padding-right: 10px;
+    display: block;
   }
 
   .info {

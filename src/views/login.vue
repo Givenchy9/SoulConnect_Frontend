@@ -1,5 +1,5 @@
 <template>
-  <div class="box flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="login flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="backdrop-blur-3xl shadow-xl bg-transparent-10 p-4 rounded-xl mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
@@ -61,7 +61,7 @@ body {
     background-size: 1510px;
   }
 
-  .box {
+  .login {
     padding-top: 120px;
   }
 }

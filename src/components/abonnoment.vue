@@ -44,7 +44,7 @@
     </div>
 
     <!-- Subscription Section -->
-    <div class="box grid grid-rows-6 bg-kleur h-screen rounded-3xl">
+    <div class="sub grid grid-rows-6 bg-kleur h-screen rounded-3xl">
       <p class="p-2 mt-4 font-bold text-center text-3xl">You Subscribed!</p>
       <ul class="px-20">
         <li>Offers</li>
@@ -124,10 +124,10 @@ function closePopup() {
 
 <style>
 @media (max-width: 800px) {
-  .box {
+  .sub {
     height: 80vh;
     width: 100%;
-    padding-left: 20%;
+    padding-left: 2000px;
   }
 }
 </style>

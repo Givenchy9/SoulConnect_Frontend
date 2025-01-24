@@ -1,66 +1,35 @@
+<!-- src/views/BeheerAbonnementen.vue -->
 <template>
     <div class="p-8 bg-gray-100 min-h-screen">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-semibold text-gray-800">Beheer Abonnementen</h2>
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4 md:mb-0">Beheer Abonnementen</h2>
         <button
-          @click="openAddModal"
+          @click="openModal('add')"
           class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
         >
           <i class="fas fa-plus mr-2"></i> Nieuw Abonnement
         </button>
       </div>
-      
+  
       <!-- Abonnementen Tabel -->
-      <div class="bg-white shadow rounded-lg overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Periode</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prijs</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Beschrijving</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="abonnement in abonnements" :key="abonnement.id">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ abonnement.id }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ abonnement.naam }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ abonnement.periode }} dagen</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ formatCurrency(abonnement.prijs) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ abonnement.beschrijving }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                <button
-                  @click="openEditModal(abonnement)"
-                  class="mr-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                >
-                  <i class="fas fa-edit"></i> Bewerken
-                </button>
-                <button
-                  @click="confirmDelete(abonnement.id)"
-                  class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                >
-                  <i class="fas fa-trash-alt"></i> Verwijderen
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <!-- Geen abonnementen gevonden -->
-        <div v-if="abonnements.length === 0" class="p-6 text-center text-gray-500">
-          Geen abonnementen gevonden.
-        </div>
-      </div>
-      
-      <!-- Add/Edit Modal -->
+      <AbonnementTable
+        :abonnementen="filteredAbonnementen"
+        :sortKey="sortKey"
+        :sortAsc="sortAsc"
+        @edit="openModal('edit', $event)"
+        @delete="openDeleteConfirm($event)"
+        @sort="sortBy"
+        @update:searchQuery="updateSearchQuery"
+      />
+  
+      <!-- Add/Edit Abonnement Modal -->
       <transition name="modal">
         <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-            <h3 class="text-2xl font-semibold mb-4">{{ isEditMode ? 'Abonnement Bewerken' : 'Nieuw Abonnement Toevoegen' }}</h3>
-            
-            <form @submit.prevent="isEditMode ? updateAbonnement() : addAbonnement()">
+          <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-8 relative animate-fade-in">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6">{{ modalType === 'edit' ? 'Abonnement Bewerken' : 'Nieuw Abonnement Toevoegen' }}</h3>
+  
+            <form @submit.prevent="modalType === 'edit' ? updateAbonnement() : addAbonnement()">
               <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Naam</label>
                 <input
@@ -82,7 +51,7 @@
                   placeholder="Bijv. 30"
                 />
               </div>
-              
+  
               <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Prijs (€)</label>
                 <input
@@ -95,8 +64,8 @@
                   placeholder="Bijv. 19.99"
                 />
               </div>
-              
-              <div class="mb-4">
+  
+              <div class="mb-6">
                 <label class="block text-gray-700 mb-2">Beschrijving</label>
                 <textarea
                   v-model="form.beschrijving"
@@ -105,7 +74,7 @@
                   placeholder="Beschrijving van het abonnement..."
                 ></textarea>
               </div>
-              
+  
               <div class="flex justify-end">
                 <button
                   type="button"
@@ -118,11 +87,11 @@
                   type="submit"
                   class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                 >
-                  {{ isEditMode ? 'Opslaan Wijzigingen' : 'Abonnement Toevoegen' }}
+                  {{ modalType === 'edit' ? 'Opslaan Wijzigingen' : 'Abonnement Toevoegen' }}
                 </button>
               </div>
             </form>
-            
+  
             <!-- Sluitknop -->
             <button @click="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
               <i class="fas fa-times text-xl"></i>
@@ -130,37 +99,40 @@
           </div>
         </div>
       </transition>
-      
-      <!-- Delete Confirmation Modal -->
+  
+      <!-- Delete Confirm Modal -->
       <transition name="modal">
         <div v-if="isDeleteConfirmOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <h3 class="text-2xl font-semibold mb-4">Bevestig Verwijderen</h3>
-            <p class="mb-6 text-gray-700">Weet je zeker dat je dit abonnement wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</p>
-            
+          <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+            <h3 class="text-2xl font-semibold text-red-600 mb-4">Bevestig Verwijderen</h3>
+            <p class="text-gray-700 mb-6">Weet je zeker dat je dit abonnement wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</p>
             <div class="flex justify-end">
               <button
-                @click="isDeleteConfirmOpen = false"
+                @click="closeDeleteConfirm"
                 class="mr-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
               >
                 Annuleren
               </button>
               <button
-                @click="confirmDeleteFinal"
+                @click="deleteAbonnement()"
                 class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
               >
                 Verwijderen
               </button>
             </div>
+            <!-- Sluitknop -->
+            <button @click="closeDeleteConfirm" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times text-xl"></i>
+            </button>
           </div>
         </div>
       </transition>
-      
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
+  import AbonnementTable from '@/components/AbonnementTable.vue'
   
   // Interface voor een Abonnement
   interface Abonnement {
@@ -178,8 +150,22 @@
     { id: 3, naam: 'Enterprise', prijs: 49.99, periode: 30, beschrijving: 'Enterprise abonnement voor grote bedrijven met maatwerkoplossingen.' },
   ])
   
+  // Zoek- en sorteer state
+  const searchQuery = ref('')
+  const sortKey = ref<'id' | 'naam' | 'periode' | 'prijs'>('id')
+  const sortAsc = ref(true)
+  
+  // Modal state
+  const isModalOpen = ref(false)
+  const modalType = ref<'add' | 'edit'>('add')
+  const currentAbonnement = ref<Abonnement | null>(null)
+  
+  // Delete confirmation state
+  const isDeleteConfirmOpen = ref(false)
+  const abonnementToDelete = ref<Abonnement | null>(null)
+  
   // Form data
-  const form = ref<Abonnement>({
+  const form = ref<Partial<Abonnement>>({
     id: 0,
     naam: '',
     periode: 0,
@@ -187,62 +173,140 @@
     beschrijving: '',
   })
   
-  // Modal state
-  const isModalOpen = ref(false)
-  const isEditMode = ref(false)
+  // Computed property voor gefilterde en gesorteerde abonnementen
+  const filteredAbonnementen = computed(() => {
+    let result = abonnements.value.filter(a =>
+      a.naam.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      a.beschrijving.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
   
-  // Delete confirmation state
-  const isDeleteConfirmOpen = ref(false)
-  const abonnementToDelete = ref<number | null>(null)
+    result = result.sort((a, b) => {
+      let compareA: string | number
+      let compareB: string | number
   
-  // Open de modal voor het toevoegen van een nieuw abonnement
-  const openAddModal = () => {
-    isEditMode.value = false
-    form.value = { id: 0, naam: '', periode: 0, prijs: 0, beschrijving: '' }
+      switch (sortKey.value) {
+        case 'id':
+          compareA = a.id
+          compareB = b.id
+          break
+        case 'naam':
+          compareA = a.naam.toLowerCase()
+          compareB = b.naam.toLowerCase()
+          break
+        case 'periode':
+          compareA = a.periode
+          compareB = b.periode
+          break
+        case 'prijs':
+          compareA = a.prijs
+          compareB = b.prijs
+          break
+        default:
+          compareA = a.id
+          compareB = b.id
+      }
+  
+      if (compareA < compareB) return sortAsc.value ? -1 : 1
+      if (compareA > compareB) return sortAsc.value ? 1 : -1
+      return 0
+    })
+  
+    return result
+  })
+  
+  // Functies
+  
+  // Open modal voor toevoegen of bewerken
+  const openModal = (type: 'add' | 'edit', abonnement: Abonnement | null = null) => {
+    modalType.value = type
+    if (type === 'edit' && abonnement) {
+      currentAbonnement.value = abonnement
+      form.value = { ...abonnement }
+    } else {
+      currentAbonnement.value = null
+      form.value = { id: 0, naam: '', periode: 0, prijs: 0, beschrijving: '' }
+    }
     isModalOpen.value = true
   }
   
-  // Open de modal voor het bewerken van een bestaand abonnement
-  const openEditModal = (abonnement: Abonnement) => {
-    isEditMode.value = true
-    form.value = { ...abonnement }
-    isModalOpen.value = true
-  }
-  
-  // Sluit de modal
+  // Sluit modal
   const closeModal = () => {
     isModalOpen.value = false
+    currentAbonnement.value = null
+    form.value = { id: 0, naam: '', periode: 0, prijs: 0, beschrijving: '' }
   }
   
   // Voeg een nieuw abonnement toe
   const addAbonnement = () => {
-    const nieuweId = abonnements.value.length > 0 ? Math.max(...abonnements.value.map(a => a.id)) + 1 : 1
-    abonnements.value.push({ ...form.value, id: nieuweId })
-    closeModal()
+    if (form.value.naam && form.value.periode && form.value.prijs !== undefined && form.value.beschrijving) {
+      const nieuweId = abonnements.value.length > 0 ? Math.max(...abonnements.value.map(a => a.id)) + 1 : 1
+      abonnements.value.push({
+        id: nieuweId,
+        naam: form.value.naam,
+        periode: form.value.periode,
+        prijs: form.value.prijs,
+        beschrijving: form.value.beschrijving,
+      })
+      closeModal()
+    }
   }
   
   // Update een bestaand abonnement
   const updateAbonnement = () => {
-    const index = abonnements.value.findIndex(a => a.id === form.value.id)
-    if (index !== -1) {
-      abonnements.value[index] = { ...form.value }
+    if (currentAbonnement.value && form.value.naam && form.value.periode && form.value.prijs !== undefined && form.value.beschrijving) {
+      const index = abonnements.value.findIndex(a => a.id === currentAbonnement.value!.id)
+      if (index !== -1) {
+        abonnements.value[index] = {
+          id: currentAbonnement.value.id,
+          naam: form.value.naam,
+          periode: form.value.periode,
+          prijs: form.value.prijs,
+          beschrijving: form.value.beschrijving,
+        }
+        closeModal()
+      }
     }
-    closeModal()
   }
   
   // Open delete bevestiging
-  const confirmDelete = (id: number) => {
-    abonnementToDelete.value = id
+  const openDeleteConfirm = (abonnement: Abonnement) => {
+    abonnementToDelete.value = abonnement
     isDeleteConfirmOpen.value = true
   }
   
-  // Bevestig verwijderen
-  const confirmDeleteFinal = () => {
-    if (abonnementToDelete.value !== null) {
-      abonnements.value = abonnements.value.filter(a => a.id !== abonnementToDelete.value)
-      abonnementToDelete.value = null
-      isDeleteConfirmOpen.value = false
+  // Sluit delete bevestiging
+  const closeDeleteConfirm = () => {
+    isDeleteConfirmOpen.value = false
+    abonnementToDelete.value = null
+  }
+  
+  // Verwijder abonnement
+  const deleteAbonnement = () => {
+    if (abonnementToDelete.value) {
+      abonnements.value = abonnements.value.filter(a => a.id !== abonnementToDelete.value!.id)
+      closeDeleteConfirm()
     }
+  }
+  
+  // Sorteer functie
+  const sortBy = (key: 'id' | 'naam' | 'periode' | 'prijs') => {
+    if (sortKey.value === key) {
+      sortAsc.value = !sortAsc.value
+    } else {
+      sortKey.value = key
+      sortAsc.value = true
+    }
+  }
+  
+  // Update de zoekopdracht vanuit de tabel component
+  const updateSearchQuery = (query: string) => {
+    searchQuery.value = query
+  }
+  
+  // Sorteer iconen (hier in de component, wordt gebruikt in de tabel)
+  const getSortIcon = (key: 'id' | 'naam' | 'periode' | 'prijs') => {
+    if (sortKey.value !== key) return 'fas fa-sort'
+    return sortAsc.value ? 'fas fa-sort-up ml-1' : 'fas fa-sort-down ml-1'
   }
   
   // Currency formatter
@@ -252,40 +316,20 @@
   </script>
   
   <style scoped>
-  .modal-enter-active, .modal-leave-active {
-    transition: opacity 0.3s;
-  }
-  .modal-enter-from, .modal-leave-to {
-    opacity: 0;
-  }
-  
-  .tooltip {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 140px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -70px;
-    
-    /* Fade in */
-    opacity: 0;
-    transition: opacity 0.3s;
+  /* Animaties voor modals */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
   }
   </style>
   

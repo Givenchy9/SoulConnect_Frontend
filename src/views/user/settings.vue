@@ -2,7 +2,7 @@
   <div class="settings grid grid-cols-4 dark:bg-black">
     <div class="settings2 col-span-1 h-screen p-2 bg-kleur dark:bg-gray-800 rounded-r-3xl">
       <div class="rounded-xl h-full">
-        <RouterLink to="homepage"><i class="fa-solid fa-arrow-left fa-2xl text-white mt-6 absolute"></i>
+        <RouterLink to="/homepage"><i class="fa-solid fa-arrow-left fa-2xl text-white mt-6 absolute"></i>
         </RouterLink>
         <h1 class="text-white font-bold text-center text-3xl py-2">Instelligen</h1>
         <hr>

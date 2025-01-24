@@ -35,7 +35,7 @@
 
   <!-- Hamburger menu voor mobiel -->
   <div v-if="mobileMenuOpen" class="lg:hidden relative left-0 w-full bg-orange-500 opacity-80 px-8 py-4">
-    <RouterLink to="/" class="block text-white text-lg py-2">Homepage</RouterLink>
+    <RouterLink to="/homepage" class="block text-white text-lg py-2">Homepage</RouterLink>
     <RouterLink to="/chat" class="block text-white text-lg py-2">Chat</RouterLink>
     <RouterLink to="/matches" class="block text-white text-lg py-2">Matches</RouterLink>
     <RouterLink to="/search" class="block text-white text-lg py-2">Search</RouterLink>

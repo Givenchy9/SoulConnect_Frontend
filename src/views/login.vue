@@ -84,7 +84,7 @@ export default {
   methods: {
     async handleSubmit() {
       this.loading = true;
-      this.error = null; // Clear previous errors
+      this.error = null;
       try {
         // Make the API request
         const response = await axios.post('http://127.0.0.1:8000/api/login', {

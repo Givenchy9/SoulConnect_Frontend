@@ -10,7 +10,6 @@
         />
       </div>
     <div class="bg-white shadow rounded-lg overflow-x-auto">
-      <!-- Zoekbalk binnen deze component -->
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
@@ -75,7 +74,7 @@
   interface Abonnement {
     id: number
     naam: string
-    periode: number // Aantal dagen
+    periode: number
     prijs: number
     beschrijving: string
   }
@@ -159,7 +158,6 @@
     return result
   })
   
-  // Currency formatter
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(value)
   }

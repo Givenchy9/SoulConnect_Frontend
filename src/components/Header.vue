@@ -40,15 +40,8 @@
     <RouterLink to="/matches" class="block text-white text-lg py-2">Matches</RouterLink>
     <RouterLink to="/search" class="block text-white text-lg py-2">Search</RouterLink>
 
-    <!-- Voeg de notificatie en profiel toe aan het hamburger menu -->
-    <RouterLink to="/notificatie" class="block text-white text-lg py-2">
-      <i class="fa-solid fa-bell text-white h-8 w-8"></i> Notificaties
-      <!-- Zorg dat notificatie-icoon hier ook groter is -->
-    </RouterLink>
-
     <div @click="toggleDropdown" class="block text-white text-lg py-2 cursor-pointer">
       <i class="fas fa-user-circle text-white h-8 w-8"></i> Profiel
-      <!-- Zorg ervoor dat het profiel-icoon hier ook groter is -->
     </div>
     <!-- Dropdown menu binnen hamburger menu -->
     <div v-if="dropdownOpen" class="bg-white text-black shadow-lg mt-2 w-full rounded-md">

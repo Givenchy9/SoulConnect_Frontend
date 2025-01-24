@@ -1,16 +1,24 @@
 <template>
-    <div class="box flex justify-center items-center mt-28 w-full">
+    <div class="box flex justify-center items-center mt-20 w-full">
         <div
-            class="max-w-sm w-full bg-kleur rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800">
+            class="w-full mx-20 bg-kleur rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800">
             <div class="text-center p-12 border-b">
                 <img class="h-24 w-24 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-lg"
                     alt="User Avatar" />
                 <h3 class="mt-4 text-xl font-bold text-white dark:text-white">
-                    {{ user.first_name }} {{ user.last_name }}
+                    {{ user.first_name }}
                 </h3>
                 <div class="mt-2 text-white dark:text-gray-300">
                     <p>{{ user.email }}</p>
-                    <p class="mt-1">Role: {{ user.role }}</p>
+                </div>
+                <hr>
+                <div class="info grid grid-cols-2 gap-2 mt-4">
+                    <div class="bg-white rounded-xl h-20 mt-2">1</div>
+                    <div class="bg-white rounded-xl h-20 mt-2">2</div>
+                    <div class="bg-white rounded-xl h-20 mt-2">1</div>
+                    <div class="bg-white rounded-xl h-20 mt-2">2</div>
+                    <div class="bg-white rounded-xl h-20 mt-2">1</div>
+                    <div class="bg-white rounded-xl h-20 mt-2">2</div>
                 </div>
             </div>
         </div>
@@ -66,6 +74,10 @@ export default {
 @media (max-width: 800px) {
     .box {
         margin-top: 0;
+    }
+    .info{
+        height: 30vh;
+        overflow: auto;
     }
 }
 </style>

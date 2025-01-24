@@ -6,6 +6,7 @@ import abonnoment from '../views/user/settings/abonnoment.vue'
 import afbeeldingen from '../views/user/settings/afbeeldingen.vue'
 import users_admin from '../views/admin/dashboard/users_admin.vue'
 import abonnoment_admin from '../views/admin/dashboard/abonnoment_admin.vue'
+import AdminLayout from '../components/Adminheader.vue' 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,9 +81,13 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      meta: { hideHeader: true },
-      component: () => import('../views/admin/dashboard/dashboard.vue'),
+      component: AdminLayout,
+      meta: { hideHeader: true, showSidebar: true },
       children: [
+        {
+          path: '',
+          component: () => import('../views/admin/dashboard/dashboard.vue'),
+        },
         {
           path: 'users_admin',
           component: users_admin,

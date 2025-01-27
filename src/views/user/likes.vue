@@ -184,6 +184,7 @@ const likeUser = (user) => {
   .matches {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     height: 28vh;
+    background-image: none;
   }
 
 

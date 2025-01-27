@@ -3,7 +3,7 @@
   <div class="matches">
     <p class="relative text-center item center font-bold text-3xl">Your Matches</p>
     <div class="kaarten overflow-auto">
-      <div class="kaarten2 grid grid-cols-6 grid-rows-3 p-2 gap-4">
+      <div class="kaarten2 grid grid-cols-6 grid-rows-3 gap-4">
         <div v-for="(user, index) in filteredUsers" :key="index" :style="{ display: Div ? 'inline-block' : 'none' }"
           class="flex-shrink-0 w-56 border hover:rotate-12 hover:bg-kleur shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
           <img :src="user.profileImage || 'https://via.placeholder.com/300x200'" alt="Foto van {{ user.name }}"
@@ -30,20 +30,25 @@
         </div>
         <div v-for="(user, index) in filteredUsers" :key="index" :style="{ display: !Div ? '' : 'none' }"
           class="flex-shrink-0 w-56 h-72 pb-4 hover:rotate-6 bg-gray-300 hover:bg-white shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
-          <div class="mt-4 px-4 grid grid-rows-6">
-            <button class="w-full bg-green-400 text-white py-2 px-4 rounded hover:bg-green-500 transition"
+          <div class="mt-4 px-4 grid grid-rows-6 grid-cols-2">
+            <h3 class="text-xl text-center font-semibold">{{ user.name }}</h3>
+            <RouterLink to="/info" class="col-span-2 text-center w-full bg-green-400 text-white py-2 px-4 rounded hover:bg-green-500 transition"
               @click="toggleDiv">
               Zie Info <i class="fa-solid fa-circle-info float-right my-1"></i>
-            </button>
-            <button class="w-full bg-blue-400 text-white py-2 px-4 rounded hover:bg-blue-500 transition"
+            </RouterLink>
+            <RouterLink to="/chat" class="col-span-2 text-center w-full bg-blue-400 text-white py-2 px-4 rounded hover:bg-blue-500 transition"
               @click="toggleDiv">
-              Chat <i class="fa-solid fa-comment-dots float-right my-1"></i>
-            </button>
-            <button class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+              Create Chat <i class="fa-solid fa-comment-dots float-right my-1"></i>
+            </RouterLink>
+            <button class="col-span-1 text-center w-full bg-purple-400 text-white py-2 px-4 rounded hover:bg-purple-700 transition"
               @click="toggleDiv">
               Dislike <i class="fa-solid fa-heart-crack float-right my-1"></i>
             </button>
-            <button class="row-start-6 w-full bg-koranje text-white py-2 px-4 rounded hover:bg-doranje transition"
+            <button class="col-span-1 text-center w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+              @click="toggleDiv">
+              Report <i class="fa-solid fa-flag float-right my-1"></i>
+            </button>
+            <button class="row-start-6 col-span-2 text-center w-full bg-koranje text-white py-2 px-4 rounded hover:bg-doranje transition"
               @click="toggleDiv">
               Ga terug <i class="fa-solid fa-right-from-bracket float-right my-1"></i>
             </button>

@@ -47,8 +47,11 @@
               </table>
             </div>
             <button
-              class="float-right mt-1 shadow-xl w-1/3 justify-center rounded-md bg-green-500 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Send
+              class="float-right mt-1 ml-2 shadow-xl w-1/3 justify-center rounded-md bg-green-500 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Send
               <i class="fa-solid fa-paper-plane"></i></button>
+            <button
+              class="float-right mt-1 shadow-xl w-1/3 justify-center rounded-md bg-red-600 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Delete Account
+              <i class="fa-solid fa-user-slash"></i></button>
           </div>
         </div>
 

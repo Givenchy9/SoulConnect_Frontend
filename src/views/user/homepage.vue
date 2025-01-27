@@ -40,10 +40,10 @@
           </button>
         </div>
         <div>
-          <button
+          <RouterLink to="/likes"
             class="flex text-3xl items-center justify-center h-full w-full rounded-md bg-kleur px-3 py-1.5 font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">
             Your likes <i class="fa-regular fa-thumbs-up ml-2"></i>
-          </button>
+          </RouterLink>
         </div>
       </div>
     </div>

@@ -18,9 +18,11 @@ const router = createRouter({
       meta: { hideHeader: true },
       component: HomeView,
     },
-    { path: '/verify-email',
+    {
+      path: '/verify-email',
       meta: { hideHeader: true },
-      component: VerifyEmail },
+      component: VerifyEmail
+    },
     {
       path: '/login',
       name: 'login',
@@ -41,19 +43,19 @@ const router = createRouter({
     {
       path: '/homepage',
       name: 'homepage',
-      meta: {  showNotificatie: true },
+      meta: { showNotificatie: true },
       component: () => import('../views/user/homepage.vue'),
     },
     {
       path: '/matches',
       name: 'matches',
-      meta: {  showNotificatie: true },
+      meta: { showNotificatie: true },
       component: () => import('../views/user/matches.vue'),
     },
     {
       path: '/search',
       name: 'search',
-      meta: {  showNotificatie: true },
+      meta: { showNotificatie: true },
       component: () => import('../views/user/search.vue'),
     },
     {
@@ -67,9 +69,15 @@ const router = createRouter({
       component: () => import('../views/user/likes.vue'),
     },
     {
+      path: '/info',
+      name: 'info',
+      meta: { hideHeader: true },
+      component: () => import('../views/user/info.vue'),
+    },
+    {
       path: '/settings',
       name: 'settings',
-      meta: { hideHeader: true  },
+      meta: { hideHeader: true },
       component: () => import('../views/user/settings.vue'),
       children: [
         {

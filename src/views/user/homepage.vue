@@ -1,88 +1,118 @@
 <template>
-  <div class="grid grid-cols-5 grid-rows-1 gap-4 m-auto mt-4  dashboard">
+  <div class="grid grid-cols-5 grid-rows-1 gap-4 m-auto mt-4 dashboard">
+    <!-- Left Section: Matches -->
     <div class="grid grid-rows-10 col-span-3">
-      <h2 class="row-span-1 text-2xl font-bold mb-6">Jouw top 5 voor vandaag</h2>
+      <h2 class="row-span-1 text-2xl font-bold mb-6">Jouw top matches</h2>
+
+      <!-- Matches (Horizontal Scroll) -->
       <div
-        class="row-span-6 border flex space-x-4 py-4 overflow-x-auto no-scrollbar shadow-xs rounded-xl transition-all duration-500">
-        <div v-for="(user, index) in topFiveUsers" :key="index"
-          class="flex-shrink-0 w-72 bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-90">
+        class="row-span-6 border flex space-x-4 py-4 overflow-x-auto no-scrollbar shadow-xs rounded-xl transition-all duration-500"
+      >
+        <div
+          v-for="(user, index) in topMatches"
+          :key="user.id"
+          class="relative flex-shrink-0 w-72 bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-90"
+        >
+          <!-- Ranking badge -->
           <div class="absolute top-2 left-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded-full">
             {{ index + 1 }}
           </div>
 
-          <img :src="user.profileImage || 'https://via.placeholder.com/300x200'" alt="Foto van {{ user.name }}"
-            class="w-full h-40 object-cover" />
+          <!-- Profile Image -->
+          <img
+            :src="user.profile_image || 'https://via.placeholder.com/300x200'"
+            alt="Foto van {{ user.nickname }}"
+            class="w-full h-40 object-cover"
+          />
 
-          <!-- Inhoud van de kaart -->
+          <!-- Card Content -->
           <div class="p-4">
-            <h3 class="text-xl font-semibold">{{ user.name }}</h3>
-
-            <p class="text-gray-600 mt-2">{{ user.oneLiner }}</p>
+            <h3 class="text-xl font-semibold">{{ user.nickname }}</h3>
+            <p class="text-gray-600 mt-2">{{ user.oneliner }}</p>
 
             <div class="mt-4 flex space-x-3">
-              <button class="flex-1 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-                @click="dislikeUser(user)">
+              <button
+                class="flex-1 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                @click="dislikeMatch(index)"
+              >
                 Dislike
               </button>
-              <button class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-                @click="likeUser(user)">
+              <button
+                class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
+                @click="likeMatch(index)"
+              >
                 Like
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Extra UI Placeholder -->
       <div class="grid grid-cols-2 border row-span-4 shadow-xs m-1 mt-2 rounded-xl transition-all duration-500">
         <div>
           <button
-            class="flex items-center justify-center h-full w-full rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">
+            class="flex items-center justify-center h-full w-full rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-blue-600"
+          >
             <i class="fa-solid fa-comment-dots fa-2xl"></i>
           </button>
         </div>
         <div>
-          <RouterLink to="/likes"
-            class="flex text-3xl items-center justify-center h-full w-full rounded-md bg-kleur px-3 py-1.5 font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">
+          <RouterLink
+            to="/likes"
+            class="flex text-3xl items-center justify-center h-full w-full rounded-md bg-kleur px-3 py-1.5 font-semibold leading-6 text-white shadow-xl hover:bg-kleur2"
+          >
             Your likes <i class="fa-regular fa-thumbs-up ml-2"></i>
           </RouterLink>
         </div>
       </div>
     </div>
+
+    <!-- Right Section: "Who Liked Me" -->
     <div class="col-span-2 border border-gray-300 m-1 mt-2 p-1 rounded-xl transition-all duration-500 w-full">
-      <div class="relative w-full max-w-md m-auto">
-        <div class="suge bg-white rounded-lg overflow-hidden">
-          <div class="bg-gray-200 h-64 w-full flex items-center justify-center">
-            <span class="text-gray-600 text-lg">Foto: {{ currentUser.name }}</span>
-          </div>
+      <!-- If no one liked me -->
+      <div v-if="usersWhoLikedMe.length === 0" class="h-full flex items-center justify-center">
+        <p class="text-lg text-gray-600">Nog niemand heeft je geliked!</p>
+      </div>
 
-          <div class="p-4">
-            <p class="font-semibold text-xl text-center">{{ currentUser.name }}</p>
-            <p class="text-blue-600 text-center">{{ currentUser.oneLiner }}</p>
-          </div>
+      <!-- Show the current "who liked me" user -->
+      <div
+        v-else
+        class="relative w-full max-w-md m-auto suge bg-white rounded-lg overflow-hidden"
+      >
+        <!-- Profile Photo -->
+        <div class="bg-gray-200 h-64 w-full flex items-center justify-center">
+          <img
+            :src="currentUser.profile_image || 'https://via.placeholder.com/300x200'"
+            alt="Foto van {{ currentUser.nickname }}"
+            class="h-full object-cover"
+          />
+        </div>
 
-          <div class="flex justify-center space-x-4 p-4">
-            <button class="flex-1 h-44 bg-red-500 text-white py-20 px-4 rounded hover:bg-red-600 transition"
-              @click="dislikeAndNext">
-              <i class="fa-solid fa-thumbs-down fa-2xl"></i>
-            </button>
-            <button class="flex-1 h-44 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-              @click="likeAndNext">
-              <i class="fa-solid fa-thumbs-up fa-2xl"></i>
-            </button>
-            <!-- <button class="bg-red-500 text-white p-3 rounded-full shadow hover:bg-red-600 transition"
-              @click="dislikeAndNext">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <button class="bg-green-500 text-white p-3 rounded-full shadow hover:bg-green-600 transition"
-              @click="likeAndNext">]
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-            </button> -->
-          </div>
+        <!-- Card Content -->
+        <div class="p-4">
+          <p class="font-semibold text-xl text-center">
+            {{ currentUser.nickname }}
+          </p>
+          <p class="text-blue-600 text-center">
+            {{ currentUser.oneliner }}
+          </p>
+        </div>
+
+        <!-- Buttons for Like/Dislike -->
+        <div class="flex justify-center space-x-4 p-4">
+          <button
+            class="flex-1 h-44 bg-red-500 text-white py-20 px-4 rounded hover:bg-red-600 transition"
+            @click="dislikeAndNext"
+          >
+            <i class="fa-solid fa-thumbs-down fa-2xl"></i>
+          </button>
+          <button
+            class="flex-1 h-44 bg-green-500 text-white py-20 px-4 rounded hover:bg-green-600 transition"
+            @click="likeAndNext"
+          >
+            <i class="fa-solid fa-thumbs-up fa-2xl"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -90,131 +120,96 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 
-// Voorbeeld-data
+// Base URL and token setup
+const BASE_URL = 'http://127.0.0.1:8000/api'
+const token = localStorage.getItem('token') || ''
 
-const topFiveUsers = ref([
-  {
-    name: 'Jasmijntje0836',
-    oneLiner: 'One-liner blablabla',
-    profileImage: 'https://images.unsplash.com/photo-1603415526960-f7e044a09eab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-  {
-    name: 'Roos_zwolle1123',
-    oneLiner: 'One-liner blablabla',
-    profileImage: ''
-  },
-  {
-    name: 'SamuraiJack',
-    oneLiner: 'I love coding!',
-    profileImage: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-  {
-    name: 'JaneDoe145',
-    oneLiner: 'Outdoor enthusiast',
-    profileImage: ''
-  },
-  {
-    name: 'PeterPan',
-    oneLiner: 'Never growing up!',
-    profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-])
+// Reactive state variables
+const topMatches = ref([])          // Left section: Matches
+const usersWhoLikedMe = ref([])     // Right section: "Who Liked Me"
+const currentIndex = ref(0)         // Index for cycling through "Who Liked Me"
 
-const exploreUsers = ref([
-  {
-    name: 'Hannahx7648',
-    oneLiner: 'One-liner bla bla bla',
-    profileImage: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-  {
-    name: 'Tommy1992',
-    oneLiner: 'Coffee lover, musician',
-    profileImage: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-  {
-    name: 'Anna_02',
-    oneLiner: 'Always smiling',
-    profileImage: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
-  },
-])
-
-const currentIndex = ref(0)
-
+// Computed property: The current user in "Who Liked Me"
 const currentUser = computed(() => {
-  return exploreUsers.value[currentIndex.value] || { name: '', oneLiner: '', profileImage: '' }
+  return usersWhoLikedMe.value[currentIndex.value] || {}
 })
 
-// Functies voor Like en Dislike
-function likeUser(user) {
-  console.log('Liked user:', user.name)
+// Fetch matches (left section)
+async function fetchTopMatches() {
+  try {
+    const response = await axios.get(`${BASE_URL}/matches`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    topMatches.value = response.data.slice(0, 5) // Only take the first 5
+  } catch (error) {
+    console.error('Error fetching matches:', error)
+  }
 }
 
-function dislikeUser(user) {
-  console.log('Disliked user:', user.name)
+// Fetch "Who Liked Me" (right section)
+async function fetchWhoLikedMe() {
+  try {
+    const response = await axios.get(`${BASE_URL}/likes/who-liked-me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    usersWhoLikedMe.value = response.data.users_who_liked_me || []
+  } catch (error) {
+    console.error('Error fetching who liked me:', error)
+  }
 }
 
-// Functies die Like/Dislike uitvoeren en naar de volgende persoon gaan
+// Like or dislike a match (left section)
+function likeMatch(index) {
+  console.log('Liked match:', topMatches.value[index].nickname)
+  topMatches.value.splice(index, 1)
+}
+function dislikeMatch(index) {
+  console.log('Disliked match:', topMatches.value[index].nickname)
+  topMatches.value.splice(index, 1)
+}
+
+// Like or dislike "Who Liked Me" user (right section)
 function likeAndNext() {
-  likeUser(currentUser.value)
+  console.log('Liked user:', currentUser.value.nickname)
   moveToNext()
 }
-
 function dislikeAndNext() {
-  dislikeUser(currentUser.value)
+  console.log('Disliked user:', currentUser.value.nickname)
   moveToNext()
 }
 
-// Functie om naar de volgende persoon te gaan
+// Move to the next "Who Liked Me" user
 function moveToNext() {
-  if (exploreUsers.value.length === 0) return
-  currentIndex.value = (currentIndex.value + 1) % exploreUsers.value.length
+  if (usersWhoLikedMe.value.length === 0) return
+  currentIndex.value = (currentIndex.value + 1) % usersWhoLikedMe.value.length
 }
+
+// Lifecycle hook to fetch data
+onMounted(() => {
+  fetchTopMatches()
+  fetchWhoLikedMe()
+})
 </script>
 
-<style>
-.slider {
-  height: 84.5vh;
-}
-
-.profile {
-  height: 320px;
-}
-
+<style scoped>
 .dashboard {
   width: 1300px;
   height: 80vh;
 }
 
 .suge {
-  width: 55 vh;
+  width: 55vh;
   height: 77vh;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
-
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none;             /* Chrome, Safari, Opera */
 }
-
-/* ::-webkit-scrollbar {
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-} */
 </style>

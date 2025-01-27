@@ -51,6 +51,12 @@ const router = createRouter({
       component: () => import('../views/user/matches.vue'),
     },
     {
+      path: '/search',
+      name: 'search',
+      meta: {  showNotificatie: true },
+      component: () => import('../views/user/search.vue'),
+    },
+    {
       path: '/chat',
       name: 'chat',
       component: () => import('../views/user/chat.vue'),

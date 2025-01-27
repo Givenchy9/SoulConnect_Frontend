@@ -1,7 +1,7 @@
 <template>
-  <div class="boxz flex justify-center items-center mt-16 w-full">
+  <div class="boxz flex justify-center items-center mt-12 w-full">
     <div
-      class="w-full mx-20 bg-kleur rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800">
+      class="w-full bg-gradient-to-b from-kleur to-pink-500 mx-20 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800">
       <div class="p-12 border-b">
         <img class="h-40 w-40 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-lg"
           alt="User Avatar" />
@@ -13,23 +13,51 @@
         <div class="text-center mt-2 text-white dark:text-gray-300">
           <p>{{ user.email }}</p>
         </div>
-        <div class="text-center mt-2 text-white dark:text-gray-300">
+        <!-- <div class="text-center mt-2 text-white dark:text-gray-300">
           <p>One Liner</p>
-        </div>
+        </div> -->
         <hr>
         <div class="info grid grid-cols-2 gap-2 mt-4">
           <div class="bg-white rounded-xl h-48 my-2">
             <p class="text-center font-bold">Bio & Oneliner</p>
+            <hr>
           </div>
-          <div class="bg-white rounded-xl h-48 mt-2">
-            <p class="text-center font-bold">General</p>
-            <p class="woorden px-20">Gender: {{ "Man" }}</p>
-            <p class="woorden px-20">Zoek Naar: {{ "Vrouw" }}</p>
-            <p class="woorden px-20">Geborte datum: {{ "12-03-1995" }}</p>
-            <p class="woorden px-20">Postcode: {{ "9542AX" }}</p>
-            <p class="woorden px-20">Relatie type: {{ "Vriendschap" }}</p>
-            <p class="woorden px-20">Gender: {{ "Male" }}</p>
-            <p class="woorden px-20">Status: {{ "Active" }}</p>
+          <div class="mt-2 bg-gradient-to-l from-kleur to-pink-500">
+            <p class="text-center bg-white font-bold backdrop-blur-3xl">General</p>
+            <table class="table-auto text-white border-collapse border border-gray-300 w-full">
+              <!-- <thead>
+                <tr class="backdrop-blur-3xl">
+                  <th class="px-4 py-2 border border-gray-300 text-left"></th>
+                  <th class="px-4 py-2 border border-gray-300 text-left"></th>
+                </tr>
+              </thead> -->
+              <tbody>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Gender:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "Man" }}</td>
+                </tr>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Zoek naar:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "Vrouw" }}</td>
+                </tr>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Geborte datum:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "23-02-2-1998" }}</td>
+                </tr>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Postcode:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "8462AB" }}</td>
+                </tr>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Relatie type:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "Vriendschap" }}</td>
+                </tr>
+                <tr class="backdrop-blur-3xl">
+                  <td class="px-4 py-2 border border-gray-300">Status:</td>
+                  <td class="px-4 py-2 border border-gray-300">{{ "Active" }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -89,6 +117,7 @@ export default {
     padding-top: 100px; */
     width: 100%;
     height: 80vh;
+    margin-top: 10px;
     margin-left: -81px;
     padding-left: 10px;
     padding-right: 10px;
@@ -102,9 +131,9 @@ export default {
     overflow: auto;
   }
 
-  .woorden {
+  /* .woorden {
     padding-left: 10px;
     padding-right: 10px;
-  }
+  } */
 }
 </style>

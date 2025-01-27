@@ -68,11 +68,20 @@ const router = createRouter({
       name: 'likes',
       component: () => import('../views/user/likes.vue'),
     },
+    
+      
     {
-      path: '/info',
-      name: 'info',
-      meta: { hideHeader: true },
+      path: '/info/:matchId',
+      name: 'Info',
       component: () => import('../views/user/info.vue'),
+      props: true, // Allows `matchId` to be passed as a prop
+      meta: { hideHeader: true },
+    },
+    {
+    path: '/info',
+    name: 'Info',
+    component: () => import('../views/user/info.vue'),
+    meta: { hideHeader: true },
     },
     {
       path: '/settings',
@@ -105,7 +114,7 @@ const router = createRouter({
       meta: { hideHeader: true, showSidebar: true },
       children: [
         {
-          path: '',
+          path: 'dashboard',
           component: () => import('../views/admin/dashboard/dashboard.vue'),
         },
         {

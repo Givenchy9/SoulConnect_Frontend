@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col" style="    height: 87.7vh;">
     <!-- DESKTOP -->
     <div class="hidden md:flex h-full">
       <!-- Sidebar with chat rooms -->
@@ -100,17 +100,28 @@ export default {
   methods: {
     // Fetch the chat rooms for the logged-in user
     async fetchChatRooms() {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/api/chat-rooms", {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
-        this.chatRooms = response.data; // Populate the chat rooms list
-      } catch (error) {
-        console.error("Error fetching chat rooms:", error);
+  try {
+    const response = await axios.get("http://127.0.0.1:8000/api/chat-rooms", {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    });
+    this.chatRooms = response.data; // Populate the chat rooms list
+
+    // Check if a specific roomId was passed as a query parameter
+    const roomId = this.$route.query.roomId;
+    if (roomId) {
+      // Find the chat room with the given roomId
+      const activeRoom = this.chatRooms.find((room) => room.id === parseInt(roomId));
+      if (activeRoom) {
+        this.selectChatRoom(activeRoom); // Set the active chat room and fetch messages
       }
-    },
+    }
+  } catch (error) {
+    console.error("Error fetching chat rooms:", error);
+  }
+},
+
 
     // Fetch messages for the selected chat room
     async fetchMessages() {
@@ -170,7 +181,7 @@ export default {
       return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
     },
   },
-  created() {
+    created() {
     // Retrieve user and token from localStorage
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -187,9 +198,11 @@ export default {
 
     console.log("Logged in as:", this.user);
 
-    // Fetch chat rooms for the authenticated user
+    // Fetch chat rooms and handle the active room logic
     this.fetchChatRooms();
   },
+
+
 };
 </script>
 

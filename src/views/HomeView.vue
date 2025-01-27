@@ -4,7 +4,7 @@ import Slideshow from "@/components/slideshow.vue";
 
 <template>
   <div class="relative h-screen bg-blue-200 rounded">
-    <div class="box2 absolute w-1/2 h-96 mt-32 left-1/2 -translate-x-1/2 z-10">
+    <div class="home absolute w-1/2 h-96 mt-32 left-1/2 -translate-x-1/2 z-10">
       <div class="backdrop-blur-3xl pb-10">
         <p class="text-center text-3xl font-bold pt-8">Powerd by QuikAppBusiness</p>
         <div>
@@ -53,7 +53,7 @@ import Slideshow from "@/components/slideshow.vue";
 </template>
 <style>
 @media (max-width: 800px) {
-  .box2 {
+  .home {
     background-image: url("https://smarative.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511634829096-045a111727eb%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwxMTc3M3wwfDF8c2VhcmNofDd8fGZyb3N0ZWQlMjBnbGFzc3xlbnwwfHx8fDE2MzMzNTc0MTU%26ixlib%3Drb-1.2.1%26q%3D80%26w%3D2000&w=3840&q=75");
     background-repeat: no-repeat;
     background-size: 1510px;

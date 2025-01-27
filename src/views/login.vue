@@ -1,5 +1,5 @@
 <template>
-  <div class="box flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="login flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="backdrop-blur-3xl shadow-xl bg-transparent-10 p-4 rounded-xl mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
@@ -61,7 +61,7 @@ body {
     background-size: 1510px;
   }
 
-  .box {
+  .login {
     padding-top: 120px;
   }
 }
@@ -77,57 +77,76 @@ export default {
       email: '',
       password: '',
       error: null,
-      loading: false
+      loading: false,
+      user: null, // Store user details locally
+      token: null, // Store token locally
     };
   },
   methods: {
     async handleSubmit() {
-      this.loading = true;
+      this.loading = true; // Start loading
       this.error = null;
+
       try {
-        // Make the API request
+        // Make the login request to the API
         const response = await axios.post('http://127.0.0.1:8000/api/login', {
           email: this.email,
-          password: this.password
+          password: this.password,
         });
 
-        // Log the response for debugging purposes
+        // Log the response for debugging
         console.log('API Response:', response.data);
 
-        // Extract the response data
-        const data = response.data;
+        // Extract user and token from the response
+        const { user, token } = response.data;
 
-        // Check for a successful response
-        if (data && data.token && data.user) {
-          // Store the token and user data in localStorage
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
+        if (user && token) {
+          // Save token and user info to localStorage
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('tokenTime', new Date().toISOString());
 
-          // Redirect to another page, e.g., films page
-          this.$router.push('/films');
+          // Store token and user in local state
+          this.token = token;
+          this.user = user;
+
+          console.log('User logged in:', user);
+
+          // Redirect to another page (e.g., the chat page)
+          this.$router.push('/chat'); // Adjust this route to fit your app
         } else {
-          // Handle unexpected responses
+          // Handle unexpected response format
           this.error = 'Unexpected response format. Please try again.';
           console.error('Unexpected response format:', response.data);
         }
       } catch (error) {
         // Handle errors during the API request
-        this.loading = false;
-
         if (error.response && error.response.data) {
-          // Server responded with an error (4xx or 5xx)
+          // Handle API errors
           console.error('Error response:', error.response.data);
-          this.error = error.response.data.message || 'Login failed. Please check your credentials.';
+          this.error =
+            error.response.data.message || 'Login failed. Check your credentials.';
         } else {
-          // No response from the server or a network error
+          // Handle network or other errors
           console.error('Network error:', error);
-          this.error = 'Network error. Please try again later.';
+          this.error = 'A network error occurred. Please try again.';
         }
       } finally {
-        this.loading = false;
+        this.loading = false; // Stop loading
       }
+    },
+  },
+  created() {
+    // Check if user is already logged in (optional)
+    const savedUser = localStorage.getItem('user');
+    const savedToken = localStorage.getItem('token');
+
+    if (savedUser && savedToken) {
+      this.user = JSON.parse(savedUser);
+      this.token = savedToken;
+      console.log('User restored from localStorage:', this.user);
     }
-  }
+  },
 };
+
 </script>

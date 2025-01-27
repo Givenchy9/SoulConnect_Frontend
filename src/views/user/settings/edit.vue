@@ -2,7 +2,7 @@
   <div class="box1 flex justify-center items-center p-0 px-16 w-full">
     <div class="box2 h-screen w-full bg-white rounded-2xl">
       <div class="box3 text-center pt-4 border-b">
-        <div class="box4 p-2 py-12 mx-auto bg-kleur rounded-2xl shadow">
+        <div class="box4 p-2 py-12 mx-auto bg-gradient-to-b from-kleur to-pink-500 rounded-2xl shadow">
           <div class="">
             <img class="img mx-auto border-4 border-white dark:border-gray-800 shadow-lg" alt="User Avatar"
               :src="profileImage" />
@@ -25,7 +25,7 @@
           </button>
           <div v-if="isExpanded" class="mt-4 rounded">
             <div class="table w-full overflow-x-auto">
-              <table class="min-w-full border-collapse border border-gray-300">
+              <table class="bg-gradient-to-l from-kleur to-pink-500 min-w-full border-collapse border border-gray-300">
                 <thead>
                   <tr class="bg-gray-200">
                     <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Oud</th>
@@ -34,7 +34,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(row, index) in tableData" :key="index" :class="index % 2 === 0 ? 'bg-gray-100' : ''">
+                  <tr v-for="(row, index) in tableData" :key="index">
                     <td class="bg-white border border-gray-300 px-4 py-2">{{ row.company }}</td>
                     <td class="bg-white border border-gray-300 px-4 py-2">{{ row.contact }}</td>
                     <td class="bg-white border border-gray-300 px-4 py-2">

@@ -2,7 +2,7 @@
   <Header v-if="!route.meta.hideHeader" />
   <AdminHeader v-if="route.meta.showSidbar"/>
   <RouterView />
-  <FloatingButton/>
+  <FloatingButton v-if="route.meta.showNotificatie"/>
 </template>
 
 <script setup lang="ts">

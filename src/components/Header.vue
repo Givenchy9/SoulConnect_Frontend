@@ -14,9 +14,6 @@
       <RouterLink to="/search" class="text-white text-lg hover:underline">Search</RouterLink>
     </div>
 
-    <RouterLink to="/notificatie" class="text-white text-2xl mr-4 lg:block hidden">
-      <i class="fa-solid fa-bell text-white h-6 w-6"></i>
-    </RouterLink>
 
     <!-- Gebruiker dropdown -->
     <div class="relative lg:block hidden">

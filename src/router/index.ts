@@ -37,11 +37,13 @@ const router = createRouter({
     {
       path: '/homepage',
       name: 'homepage',
+      meta: {  showNotificatie: true },
       component: () => import('../views/user/homepage.vue'),
     },
     {
       path: '/matches',
       name: 'matches',
+      meta: {  showNotificatie: true },
       component: () => import('../views/user/matches.vue'),
     },
     {
@@ -52,12 +54,13 @@ const router = createRouter({
     {
       path: '/likes',
       name: 'likes',
+      meta: { hideHeader: true , showNotificatie: true },
       component: () => import('../views/user/likes.vue'),
     },
     {
       path: '/settings',
       name: 'settings',
-      meta: { hideHeader: true },
+      meta: { hideHeader: true  },
       component: () => import('../views/user/settings.vue'),
       children: [
         {

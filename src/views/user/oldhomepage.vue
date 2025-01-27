@@ -1,11 +1,12 @@
 <template>
-  <div class="grid grid-cols-5 grid-rows-1 gap-4 m-auto mt-4  dashboard">
-    <div class="grid grid-rows-10 col-span-3">
-      <h2 class="row-span-1 text-2xl font-bold mb-6">Jouw top 5 voor vandaag</h2>
-      <div
-        class="row-span-6 border flex space-x-4 py-4 overflow-x-auto no-scrollbar shadow-xs rounded-xl transition-all duration-500">
+  <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row gap-8 z-10">
+    <!-- Jouw top 5 voor vandaag -->
+    <div class="w-full md:w-1/2">
+      <h2 class="text-2xl font-bold mb-6">Jouw top 5 voor vandaag</h2>
+      <!-- scroll container -->
+      <div class="flex space-x-4 overflow-x-auto pb-4">
         <div v-for="(user, index) in topFiveUsers" :key="index"
-          class="flex-shrink-0 w-72 bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-90">
+          class="flex-shrink-0 w-72 bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105">
           <div class="absolute top-2 left-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded-full">
             {{ index + 1 }}
           </div>
@@ -32,24 +33,14 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-2 border row-span-4 shadow-xs m-1 mt-2 rounded-xl transition-all duration-500">
-        <div>
-          <button
-            class="flex items-center justify-center h-full w-full rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">
-            <i class="fa-solid fa-comment-dots fa-2xl"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            class="flex text-3xl items-center justify-center h-full w-full rounded-md bg-kleur px-3 py-1.5 font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">
-            Your likes <i class="fa-regular fa-thumbs-up ml-2"></i>
-          </button>
-        </div>
-      </div>
     </div>
-    <div class="col-span-2 border border-gray-300 m-1 mt-2 p-1 rounded-xl transition-all duration-500 w-full">
-      <div class="relative w-full max-w-md m-auto">
-        <div class="suge bg-white rounded-lg overflow-hidden">
+
+    <!-- Mensen die jouw gelikt hebben -->
+    <div class="w-full md:w-1/2 flex flex-col items-center">
+      <h2 class="text-xl font-bold mb-4">Mensen die jouw gelikt hebben</h2>
+
+      <div class="relative w-full max-w-md">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
           <div class="bg-gray-200 h-64 w-full flex items-center justify-center">
             <span class="text-gray-600 text-lg">Foto: {{ currentUser.name }}</span>
           </div>
@@ -60,28 +51,22 @@
           </div>
 
           <div class="flex justify-center space-x-4 p-4">
-            <button class="flex-1 h-44 bg-red-500 text-white py-20 px-4 rounded hover:bg-red-600 transition"
+            <button class="bg-red-500 text-white p-3 rounded-full shadow hover:bg-red-600 transition"
               @click="dislikeAndNext">
-              <i class="fa-solid fa-thumbs-down fa-2xl"></i>
-            </button>
-            <button class="flex-1 h-44 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-              @click="likeAndNext">
-              <i class="fa-solid fa-thumbs-up fa-2xl"></i>
-            </button>
-            <!-- <button class="bg-red-500 text-white p-3 rounded-full shadow hover:bg-red-600 transition"
-              @click="dislikeAndNext">
+              <!-- Dislike Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
             <button class="bg-green-500 text-white p-3 rounded-full shadow hover:bg-green-600 transition"
-              @click="likeAndNext">]
+              @click="likeAndNext">
+              <!-- Like Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-            </button> -->
+            </button>
           </div>
         </div>
       </div>
@@ -103,7 +88,7 @@ const topFiveUsers = ref([
   {
     name: 'Roos_zwolle1123',
     oneLiner: 'One-liner blablabla',
-    profileImage: ''
+    profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
   },
   {
     name: 'SamuraiJack',
@@ -113,7 +98,7 @@ const topFiveUsers = ref([
   {
     name: 'JaneDoe145',
     oneLiner: 'Outdoor enthusiast',
-    profileImage: ''
+    profileImage: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&q=80&w=400'
   },
   {
     name: 'PeterPan',
@@ -173,35 +158,29 @@ function moveToNext() {
 }
 </script>
 
-<style>
-.slider {
-  height: 84.5vh;
+<style scoped>
+.transition-transform {
+  transition: transform 0.3s;
 }
 
-.profile {
-  height: 320px;
+.hover\:scale-105:hover {
+  transform: scale(1.05);
 }
 
-.dashboard {
-  width: 1300px;
-  height: 80vh;
+/* Badge stijl */
+.bg-blue-500 {
+  background-color: #3b82f6;
 }
 
-.suge {
-  width: 55 vh;
-  height: 77vh;
+.text-white {
+  color: #ffffff;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.rounded-full {
+  border-radius: 9999px;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   height: 8px;
 }
 
@@ -216,5 +195,5 @@ function moveToNext() {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-} */
+}
 </style>

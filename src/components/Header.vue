@@ -15,9 +15,6 @@
       <RouterLink to="/search" class="text-white text-lg hover:underline">Search</RouterLink>
     </div>
 
-    <RouterLink to="/notificatie" class="text-white text-2xl mr-4 lg:block hidden">
-      <i class="fa-solid fa-bell text-white h-6 w-6"></i>
-    </RouterLink>
 
     <!-- User Dropdown -->
     <div class="relative lg:block hidden">
@@ -42,13 +39,10 @@
 
   <!-- Mobile Hamburger Menu -->
   <div v-if="mobileMenuOpen" class="lg:hidden relative left-0 w-full bg-orange-500 opacity-80 px-8 py-4">
-    <RouterLink to="/" class="block text-white text-lg py-2">Homepage</RouterLink>
+    <RouterLink to="/homepage" class="block text-white text-lg py-2">Homepage</RouterLink>
     <RouterLink to="/chat" class="block text-white text-lg py-2">Chat</RouterLink>
     <RouterLink to="/matches" class="block text-white text-lg py-2">Matches</RouterLink>
     <RouterLink to="/search" class="block text-white text-lg py-2">Search</RouterLink>
-    <RouterLink to="/notificatie" class="block text-white text-lg py-2">
-      <i class="fa-solid fa-bell text-white h-8 w-8"></i> Notificaties
-    </RouterLink>
 
     <!-- User Dropdown for Mobile -->
     <div @click="toggleDropdown" class="block text-white text-lg py-2 cursor-pointer">

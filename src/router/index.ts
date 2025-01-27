@@ -7,6 +7,7 @@ import afbeeldingen from '../views/user/settings/afbeeldingen.vue'
 import users_admin from '../views/admin/dashboard/users_admin.vue'
 import abonnoment_admin from '../views/admin/dashboard/abonnoment_admin.vue'
 import VerifyEmail from '../views/user/VerifyEmail.vue'
+import AdminLayout from '../components/Adminheader.vue' 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,11 +41,13 @@ const router = createRouter({
     {
       path: '/homepage',
       name: 'homepage',
+      meta: {  showNotificatie: true },
       component: () => import('../views/user/homepage.vue'),
     },
     {
       path: '/matches',
       name: 'matches',
+      meta: {  showNotificatie: true },
       component: () => import('../views/user/matches.vue'),
     },
     {
@@ -55,12 +58,13 @@ const router = createRouter({
     {
       path: '/likes',
       name: 'likes',
+      meta: { hideHeader: true , showNotificatie: true },
       component: () => import('../views/user/likes.vue'),
     },
     {
       path: '/settings',
       name: 'settings',
-      meta: { hideHeader: true },
+      meta: { hideHeader: true  },
       component: () => import('../views/user/settings.vue'),
       children: [
         {
@@ -84,9 +88,13 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      meta: { hideHeader: true },
-      component: () => import('../views/admin/dashboard/dashboard.vue'),
+      component: AdminLayout,
+      meta: { hideHeader: true, showSidebar: true },
       children: [
+        {
+          path: '',
+          component: () => import('../views/admin/dashboard/dashboard.vue'),
+        },
         {
           path: 'users_admin',
           component: users_admin,

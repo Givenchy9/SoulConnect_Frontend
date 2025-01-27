@@ -110,7 +110,7 @@ const closeModal = () => {
 
 <style>
 .inff {
-  background-image: url("https://plus.unsplash.com/premium_photo-1673127327176-397f94c02bbc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z2xhc3Ntb3JwaGlzbXxlbnwwfHwwfHx8MA%3D%3D");
+  background-image: url("https://img.freepik.com/free-vector/gradient-glassmorphism-horizontal-banner_23-2149440108.jpg");
   background-size: cover;
 }
 

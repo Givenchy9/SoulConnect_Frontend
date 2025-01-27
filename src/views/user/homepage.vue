@@ -39,7 +39,7 @@
               </button>
               <button
                 class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-                @click="likeMatch(index)"
+                @click="likeMatch(user.id, index)"
               >
                 Like
               </button>
@@ -47,9 +47,8 @@
           </div>
         </div>
       </div>
-
-      <!-- Extra UI Placeholder -->
-      <div class="grid grid-cols-2 border row-span-4 shadow-xs m-1 mt-2 rounded-xl transition-all duration-500">
+            <!-- Extra UI Placeholder -->
+            <div class="grid grid-cols-2 border row-span-4 shadow-xs m-1 mt-2 rounded-xl transition-all duration-500">
         <div>
           <button
             class="flex items-center justify-center h-full w-full rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-blue-600"
@@ -67,6 +66,8 @@
         </div>
       </div>
     </div>
+
+
 
     <!-- Right Section: "Who Liked Me" -->
     <div class="col-span-2 border border-gray-300 m-1 mt-2 p-1 rounded-xl transition-all duration-500 w-full">
@@ -161,24 +162,36 @@ async function fetchWhoLikedMe() {
   }
 }
 
+// Like a user
+async function likeUser(likedUserId) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/like`,
+      { liked_user_id: likedUserId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    console.log(response.data.message) // "It’s a match!" or "Profile liked successfully."
+  } catch (error) {
+    console.error(error.response?.data?.message || 'Error liking user')
+  }
+}
+
 // Like or dislike a match (left section)
-function likeMatch(index) {
-  console.log('Liked match:', topMatches.value[index].nickname)
-  topMatches.value.splice(index, 1)
+function likeMatch(likedUserId, index) {
+  likeUser(likedUserId) // Send the like request
+  topMatches.value.splice(index, 1) // Remove the user from the UI
 }
 function dislikeMatch(index) {
-  console.log('Disliked match:', topMatches.value[index].nickname)
-  topMatches.value.splice(index, 1)
+  topMatches.value.splice(index, 1) // Just remove from the UI
 }
 
 // Like or dislike "Who Liked Me" user (right section)
 function likeAndNext() {
-  console.log('Liked user:', currentUser.value.nickname)
+  likeUser(currentUser.value.id) // Send the like request
   moveToNext()
 }
 function dislikeAndNext() {
-  console.log('Disliked user:', currentUser.value.nickname)
-  moveToNext()
+  moveToNext() // Just move to the next user
 }
 
 // Move to the next "Who Liked Me" user

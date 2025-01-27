@@ -1,10 +1,10 @@
 <template>
-  <div class="box2 m-auto">
+  <div class="box m-auto">
     <!-- Subscription Options (Visible when user is not subscribed) -->
-    <div v-if="!isSubscribed" class="box2 flex mx-auto mt-8 px-12 gap-6 ml-28 mt-28">
+    <div v-if="!isSubscribed" class="sub flex mx-auto mt-8 px-12 gap-6 ml-28 mt-28">
       <!-- First Tier -->
       <div class="p-6 bg-white rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold text-kleur">{{ tiers[0].name }}</h3>
+        <h3 class="text-lg text-white font-semibold text-kleur">{{ tiers[0].name }}</h3>
         <p class="mt-2 text-3xl font-bold text-gray-900">
           {{ tiers[0].priceMonthly }}
           <span class="text-base font-medium text-gray-500">/month</span>
@@ -44,11 +44,11 @@
     </div>
 
     <!-- Subscription Section (Visible when user is subscribed) -->
-    <div v-if="isSubscribed" class="m-2 p-6 bg-kleur rounded-lg shadow-md">
+    <div v-if="isSubscribed" class="sub2 m-20 h-5/6 p-6 rounded-lg shadow-md bg-gradient-to-b from-kleur to-pink-500">
       <p class="p-2 mt-4 font-bold text-center text-3xl">You Subscribed!</p>
       <hr>
-      <p class="mt-4 text-sm text-gray-600">{{ tiers[0].description }}</p>
-      <ul class="mt-4 space-y-2 text-sm text-gray-600 h-80">
+      <p class="mt-4 text-sm text-white">{{ tiers[0].description }}</p>
+      <ul class="mt-4 space-y-2 text-sm text-white h-80">
         <li v-for="feature in tiers[0].features" :key="feature" class="flex items-center">
           <CheckIcon class="h-5 w-5 text-kleur mr-2" aria-hidden="true" />
           {{ feature }}
@@ -56,7 +56,7 @@
       </ul>
       <div class="row-start-6">
         <button @click="showCancelConfirmation"
-          class="flex shadow-xl w-1/2 m-auto justify-center rounded-md bg-kleur px-3 py-1.5 mt-2 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Stop
+          class="flex shadow-xl w-1/2 m-auto justify-center rounded-md bg-koranje px-3 py-1.5 mt-2 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Stop
           subscription</button>
       </div>
     </div>
@@ -81,13 +81,13 @@
         <h2 class="text-xl font-bold text-gray-900">Subscribe to {{ selectedTier.name }}</h2>
         <p class="mt-4 text-gray-600">{{ selectedTier.description }}</p>
         <p class="mt-2 text-2xl font-semibold text-kleur">{{ selectedTier.priceMonthly }}/month</p>
-        <label class="inline-flex items-center cursor-pointer">
+        <!-- <label class="inline-flex items-center cursor-pointer">
           <input type="checkbox" value="" class="sr-only peer">
           <div
             class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600">
           </div>
           <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Toggle me</span>
-        </label><br>
+        </label><br> -->
         <button @click="openPasswordModal" :disabled="isSubscribed"
           class="mt-6 px-4 py-2 rounded-md text-white shadow-xl"
           :class="isSubscribed ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-700'">
@@ -209,11 +209,15 @@ function cancelSubscription() {
 
 <style>
 @media (max-width: 800px) {
-  .box2 {
+  .sub {
     background-image: none;
     display: block;
     margin-left: 0;
     margin-top: 20px;
+  }
+
+  .sub2 {
+    margin: 20px;
   }
 }
 </style>

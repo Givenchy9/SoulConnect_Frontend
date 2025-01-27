@@ -1,6 +1,6 @@
 <template>
   <div class="settings grid grid-cols-4 dark:bg-black">
-    <div class="settings2 col-span-1 h-screen p-2 bg-kleur dark:bg-gray-800 rounded-r-3xl">
+    <div class="settings2 bg-gradient-to-b from-kleur to-pink-500 sticky top-0 col-span-1 h-screen p-2 bg-kleur dark:bg-gray-800 rounded-r-3xl">
       <div class="rounded-xl h-full">
         <RouterLink to="/homepage"><i class="fa-solid fa-arrow-left fa-2xl text-white mt-6 absolute"></i>
         </RouterLink>

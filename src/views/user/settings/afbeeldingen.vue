@@ -1,5 +1,5 @@
 <template>
-  <div class="box grid grid-cols-2 bg-white h-screen rounded-3xl overflow-auto">
+  <div class="gallery grid grid-cols-2 bg-white h-screen rounded-3xl overflow-auto">
     <!-- Gallery Images -->
     <div v-for="(image, index) in images" :key="index" class="relative cursor-pointer">
       <img :src="image.src" :alt="image.alt" class="w-full h-full object-cover" @click="showPopup(image)" />
@@ -82,7 +82,7 @@ export default {
 
 <style>
 @media (max-width: 800px) {
-  .box {
+  .gallery {
     overflow: auto;
     height: 80vh;
     padding-left: 0;

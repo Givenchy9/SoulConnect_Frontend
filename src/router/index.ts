@@ -6,6 +6,7 @@ import abonnoment from '../views/user/settings/abonnoment.vue'
 import afbeeldingen from '../views/user/settings/afbeeldingen.vue'
 import users_admin from '../views/admin/dashboard/users_admin.vue'
 import abonnoment_admin from '../views/admin/dashboard/abonnoment_admin.vue'
+import VerifyEmail from '../views/user/VerifyEmail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,9 @@ const router = createRouter({
       meta: { hideHeader: true },
       component: HomeView,
     },
+    { path: '/verify-email',
+      meta: { hideHeader: true },
+      component: VerifyEmail },
     {
       path: '/login',
       name: 'login',

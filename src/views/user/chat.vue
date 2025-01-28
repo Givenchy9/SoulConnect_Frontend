@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col" style="    height: 87.7vh;">
+  <div class="flex flex-col" style="height: 87.7vh;">
     <!-- DESKTOP -->
     <div class="hidden md:flex h-full">
       <!-- Sidebar with chat rooms -->
@@ -12,6 +12,11 @@
             @click="selectChatRoom(room)"
             :class="{ 'bg-gray-300': selectedChatRoom && selectedChatRoom.id === room.id }"
           >
+            <img
+              :src="getOtherUserProfileImage(room)"
+              alt="User Image"
+              class="w-10 h-10 rounded-full mr-4"
+            />
             <span class="font-bold">
               Chat Room with {{ getOtherUserNickname(room) }}
             </span>
@@ -82,7 +87,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 
@@ -100,28 +104,27 @@ export default {
   methods: {
     // Fetch the chat rooms for the logged-in user
     async fetchChatRooms() {
-  try {
-    const response = await axios.get("http://127.0.0.1:8000/api/chat-rooms", {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    });
-    this.chatRooms = response.data; // Populate the chat rooms list
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/chat-rooms", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.chatRooms = response.data; // Populate the chat rooms list
 
-    // Check if a specific roomId was passed as a query parameter
-    const roomId = this.$route.query.roomId;
-    if (roomId) {
-      // Find the chat room with the given roomId
-      const activeRoom = this.chatRooms.find((room) => room.id === parseInt(roomId));
-      if (activeRoom) {
-        this.selectChatRoom(activeRoom); // Set the active chat room and fetch messages
+        // Check if a specific roomId was passed as a query parameter
+        const roomId = this.$route.query.roomId;
+        if (roomId) {
+          // Find the chat room with the given roomId
+          const activeRoom = this.chatRooms.find((room) => room.id === roomId);
+          if (activeRoom) {
+            this.selectChatRoom(activeRoom); // Set the active chat room and fetch messages
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching chat rooms:", error);
       }
-    }
-  } catch (error) {
-    console.error("Error fetching chat rooms:", error);
-  }
-},
-
+    },
 
     // Fetch messages for the selected chat room
     async fetchMessages() {
@@ -175,13 +178,20 @@ export default {
         : room.user1.nickname;
     },
 
+    // Helper to get the profile image of the other user in the chat room
+    getOtherUserProfileImage(room) {
+      return room.user_1_id === this.user.id
+        ? room.user2.profile_image
+        : room.user1.profile_image;
+    },
+
     // Helper to format timestamps
     formatTime(timestamp) {
       const date = new Date(timestamp);
       return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
     },
   },
-    created() {
+  created() {
     // Retrieve user and token from localStorage
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -201,8 +211,6 @@ export default {
     // Fetch chat rooms and handle the active room logic
     this.fetchChatRooms();
   },
-
-
 };
 </script>
 

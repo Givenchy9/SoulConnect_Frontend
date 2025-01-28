@@ -5,12 +5,12 @@
         <div class="box4 p-2 py-12 mx-auto bg-gradient-to-b from-kleur to-pink-500 rounded-2xl shadow">
           <div class="">
             <img class="img mx-auto border-4 border-white dark:border-gray-800 shadow-lg" alt="User Avatar"
-              :src="profileImage" />
+              :src="user.profile_image || 'default-image-url'" />
             <h3 class="mt-4 text-xl font-bold text-white dark:text-white">
-              {{ "naam" }}
+              {{ user.nickname }}
             </h3>
             <div class="mt-2 text-white dark:text-gray-300">
-              <p>{{ "email" }}</p>
+              <p>{{ user.email }}</p>
             </div>
             <button @click="openModal"
               class="flex shadow-xl w-1/2 m-auto justify-center rounded-md bg-koranje mt-4 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-doranje focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Edit
@@ -24,32 +24,63 @@
             <i :class="isExpanded ? 'fa-solid fa-angles-up' : 'fa-solid fa-angles-down'" class="mr-2 px-3 py-1.5"></i>
           </button>
           <div v-if="isExpanded" class="mt-4 rounded">
-            <div class="table w-full overflow-x-auto">
-              <table class="bg-gradient-to-l from-kleur to-pink-500 min-w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr class="bg-gray-200">
-                    <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Oud</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Nieuw</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(row, index) in tableData" :key="index">
-                    <td class="bg-white border border-gray-300 px-4 py-2">{{ row.company }}</td>
-                    <td class="bg-white border border-gray-300 px-4 py-2">{{ row.contact }}</td>
-                    <td class="bg-white border border-gray-300 px-4 py-2">
-                      <button
-                        class="flex shadow-xl w-full justify-center rounded-md bg-kleur px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">edit<i
-                          class="fa-solid fa-pen-to-square px-3 py-1.5"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <button
-              class="float-right mt-1 ml-2 shadow-xl w-1/3 justify-center rounded-md bg-green-500 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Send
-              <i class="fa-solid fa-paper-plane"></i></button>
-            <button
+            <form @submit.prevent="updateProfile">
+              <div class="table w-full overflow-x-auto">
+                <table class="bg-gradient-to-l from-kleur to-pink-500 min-w-full border-collapse border border-gray-300">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Field</th>
+                      <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Current Value</th>
+                      <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">New Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="bg-white border border-gray-300 px-4 py-2">Nickname</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">{{ user.nickname }}</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">
+                        <input v-model="form.nickname" type="text" class="w-full px-2 py-1 border rounded" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white border border-gray-300 px-4 py-2">Email</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">{{ user.email }}</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">
+                        <input v-model="form.email" type="email" class="w-full px-2 py-1 border rounded" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white border border-gray-300 px-4 py-2">Oneliner</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">{{ user.oneliner }}</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">
+                        <input v-model="form.oneliner" type="text" class="w-full px-2 py-1 border rounded" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white border border-gray-300 px-4 py-2">Profile Text</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">{{ user.profile_text }}</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">
+                        <textarea v-model="form.profile_text" class="w-full px-2 py-1 border rounded"></textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white border border-gray-300 px-4 py-2">Gender</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">{{ user.gender }}</td>
+                      <td class="bg-white border border-gray-300 px-4 py-2">
+                        <select v-model="form.gender" class="w-full px-2 py-1 border rounded">
+                          <option value="Man">Man</option>
+                          <option value="Vrouw">Vrouw</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="submit"
+                class="float-right mt-1 ml-2 shadow-xl w-1/3 justify-center rounded-md bg-green-500 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Save
+                Changes</button>
+            </form>
+            <button @click="deleteAccount"
               class="float-right mt-1 shadow-xl w-1/3 justify-center rounded-md bg-red-600 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Delete Account
               <i class="fa-solid fa-user-slash"></i></button>
           </div>
@@ -74,11 +105,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
 // Reactive states
-const profileImage = ref(''); // Default profile image URL
 const isModalOpen = ref(false); // Controls modal visibility
+const isExpanded = ref(false);
+const user = ref({});
+const form = ref({
+  nickname: '',
+  email: '',
+  oneliner: '',
+  profile_text: '',
+  gender: ''
+});
+
+// Fetch current user data
+onMounted(async () => {
+  const token = localStorage.getItem('token'); // Retrieve token from local storage
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/user', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    user.value = response.data.user;
+    form.value.nickname = user.value.nickname;
+    form.value.email = user.value.email;
+    form.value.oneliner = user.value.oneliner;
+    form.value.profile_text = user.value.profile_text;
+    form.value.gender = user.value.gender;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+});
 
 // Open modal for editing profile picture
 function openModal() {
@@ -96,30 +154,64 @@ function onFileChange(event) {
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      profileImage.value = e.target.result; // Set the new profile image
+      user.value.profile_image = e.target.result; // Set the new profile image
     };
     reader.readAsDataURL(file);
   }
 }
 
-// Save the selected profile image (you can add further logic here to handle the image saving)
-function saveProfileImage() {
-  // You can send this image to your server or handle it as needed
-  console.log('Profile image saved:', profileImage.value);
-  closeModal();
+// Save the selected profile image
+async function saveProfileImage() {
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  formData.append('profile_image', user.value.profile_image);
+
+  try {
+    await axios.post('http://127.0.0.1:8000/api/user/profile/image', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    alert('Profile image updated successfully!');
+    closeModal();
+  } catch (error) {
+    console.error('Error updating profile image:', error);
+    alert('Failed to update profile image.');
+  }
 }
 
-// Example table data (you can replace it with actual data or fetch from an API)
-const tableData = ref([
-  { company: 'Alfreds Futterkiste', contact: 'Maria Anders', country: 'Germany' },
-  { company: 'Centro comercial Moctezuma', contact: 'Francisco Chang', country: 'Mexico' },
-  { company: 'Ernst Handel', contact: 'Roland Mendel', country: 'Austria' },
-  { company: 'Island Trading', contact: 'Helen Bennett', country: 'UK' },
-  { company: 'Laughing Bacchus Winecellars', contact: 'Yoshi Tannamuri', country: 'Canada' },
-  { company: 'Magazzini Alimentari Riuniti', contact: 'Giovanni Rovelli', country: 'Italy' },
-]);
+// Update user profile
+async function updateProfile() {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.put('http://127.0.0.1:8000/api/user/profile', form.value, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    user.value = response.data.user;
+    alert('Profile updated successfully!');
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    alert('Failed to update profile.');
+  }
+}
 
-const isExpanded = ref(false);
+// Delete account
+async function deleteAccount() {
+  if (confirm('Are you sure you want to delete your account?')) {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.delete('http://127.0.0.1:8000/api/user', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Account deleted successfully!');
+      // Redirect to login or home page
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      alert('Failed to delete account.');
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -155,47 +247,3 @@ const isExpanded = ref(false);
   }
 }
 </style>
-
-
-
-
-<!-- <div class="box3">
-  <img class="h-24 w-80 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-lg"
-    alt="User Avatar" @click="openModal" :src="profileImage" />
-  <h3 class="mt-4 text-xl font-bold text-white dark:text-white">
-    {{ "naam" }}
-  </h3>
-  <div class="mt-2 text-white dark:text-gray-300">
-    <p>{{ "email" }}</p>
-  </div>
-  <div class="container mx-auto mt-10">
-  </div>
-</div>
-<div class="table w-full overflow-x-auto">
-  <table class="min-w-full border-collapse border border-gray-300">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Oud</th>
-        <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700">Nieuw</th>
-        <th class="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(row, index) in tableData" :key="index" :class="index % 2 === 0 ? 'bg-gray-100' : ''">
-        <td class="bg-white border border-gray-300 px-4 py-2">{{ row.company }}</td>
-        <td class="bg-white border border-gray-300 px-4 py-2">{{ row.contact }}</td>
-        <td class="bg-white border border-gray-300 px-4 py-2">
-          <button
-            class="flex shadow-xl w-full justify-center rounded-md bg-kleur px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">edit<i
-              class="fa-solid fa-pen-to-square px-3 py-1.5"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<button
-  class="float-right shadow-xl w-1/3 justify-center rounded-md bg-green-500 mt-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xl hover:bg-kleur2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kleur">Send
-  <i class="fa-solid fa-paper-plane"></i></button>
-</div>
-</div>
-</div> -->

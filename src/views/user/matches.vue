@@ -20,7 +20,7 @@
             </button>
             <button
               class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-              @click="reportUser(user.id)"
+              @click="openReportModal(user.id)"
             >
               Report <i class="fa-solid fa-flag"></i>
             </button>
@@ -32,6 +32,18 @@
             View Profile <i class="fa-solid fa-circle-info"></i>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div v-if="showReportModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Report User</h2>
+      <textarea v-model="reportReason" class="w-full p-2 border rounded" placeholder="Enter the reason for reporting"></textarea>
+      <div class="mt-4 flex justify-end">
+        <button class="bg-gray-500 text-white py-2 px-4 rounded mr-2" @click="closeReportModal">Cancel</button>
+        <button class="bg-red-500 text-white py-2 px-4 rounded" @click="submitReport">Submit</button>
       </div>
     </div>
   </div>
@@ -47,6 +59,10 @@ const matches = ref([]);
 const token = localStorage.getItem('token') || '';
 const user2 = localStorage.getItem('user') || '';
 let userId = '';
+
+const showReportModal = ref(false);
+const reportReason = ref('');
+let reportedUserId = '';
 
 if (user2) {
   try {
@@ -71,20 +87,39 @@ const fetchMatches = async () => {
   }
 };
 
-// Report user
-const reportUser = async (reportedUserId) => {
+// Open report modal
+const openReportModal = (userId) => {
+  reportedUserId = userId;
+  showReportModal.value = true;
+};
+
+// Close report modal
+const closeReportModal = () => {
+  showReportModal.value = false;
+  reportReason.value = '';
+};
+
+// Submit report
+const submitReport = async () => {
+  if (!reportReason.value) {
+    alert('Please enter a reason for reporting.');
+    return;
+  }
+
   try {
     const response = await axios.post(
       'http://127.0.0.1:8000/api/report',
       {
         user_id: userId,
         reported_user_id: reportedUserId,
+        reason: reportReason.value,
       },
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     console.log('Report successful:', response.data);
+    closeReportModal();
   } catch (error) {
     console.error('Failed to report user:', error);
   }
@@ -128,9 +163,7 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1rem;
 }
-</style>
 
-<style>
 @media (max-width: 800px) {
   .matches {
     grid-template-columns: repeat(1, minmax(0, 1fr));

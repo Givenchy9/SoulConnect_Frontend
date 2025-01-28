@@ -1,42 +1,36 @@
 <template>
-  <div class="matches">
-    <p class="relative text-center item center font-bold text-3xl">Your Matches</p>
-    <div class="kaarten overflow-auto">
-      <div class="kaarten2 grid grid-cols-6 grid-rows-3 gap-4">
-        <div v-for="(user, index) in matches" :key="user.id">
-          <div class="flex-shrink-0 w-56 border hover:bg-white shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
-            <!-- Front of the Card -->
-            <img
-              :src="user.profile_image || 'https://via.placeholder.com/300x200'"
-              alt="Foto van {{ user.nickname }}"
-              class="h-40 w-40 mt-4 rounded-3xl m-auto object-cover"
-            />
-            <div class="p-4">
-              <h3 class="text-xl text-center font-semibold">{{ user.nickname }}</h3>
-              <p class="text-gray-600 text-center mt-2">{{ user.gender || 'Unknown Gender' }}</p>
-              <div class="mt-4 grid grid-cols-2 gap-2">
-                <button
-                  class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-                  @click="createChatRoom(user.id)"
-                >
-                  Chat <i class="fa-solid fa-comments"></i>
-                </button>
-                <button
-                  class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-                  @click="reportUser(user.id)"
-                >
-                  Report <i class="fa-solid fa-flag"></i>
-                </button>
-              </div>
-              <button
-              class="w-full mt-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-              @click="viewUserProfile(user.id)"
+  <div class="kaarten2 grid grid-cols-6 grid-rows-3 gap-4">
+    <div v-for="(user, index) in matches" :key="user.id">
+      <div class="flex-shrink-0 w-56 border hover:bg-white shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
+        <!-- Front of the Card -->
+        <img
+          :src="user.profile_image || 'https://via.placeholder.com/300x200'"
+          alt="Foto van {{ user.nickname }}"
+          class="h-40 w-40 mt-4 rounded-3xl m-auto object-cover"
+        />
+        <div class="p-4">
+          <h3 class="text-xl text-center font-semibold">{{ user.nickname }}</h3>
+          <p class="text-gray-600 text-center mt-2">{{ user.gender || 'Unknown Gender' }}</p>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <button
+              class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+              @click="createChatRoom(user.id)"
             >
-              View Profile <i class="fa-solid fa-circle-info"></i>
+              Chat <i class="fa-solid fa-comments"></i>
             </button>
-
-            </div>
+            <button
+              class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+              @click="reportUser(user.id)"
+            >
+              Report <i class="fa-solid fa-flag"></i>
+            </button>
           </div>
+          <button
+            class="w-full mt-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
+            @click="viewUserProfile(user.id)"
+          >
+            View Profile <i class="fa-solid fa-circle-info"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -52,10 +46,12 @@ import { useRouter } from 'vue-router';
 const matches = ref([]);
 const token = localStorage.getItem('token') || '';
 const user2 = localStorage.getItem('user') || '';
+let userId = '';
+
 if (user2) {
   try {
     const userObject = JSON.parse(user2); // Parse the JSON string to an object
-    console.log(userObject.id); // Access the 'id' field
+    userId = userObject.id; // Access the 'id' field
   } catch (error) {
     console.error('Failed to parse user from localStorage:', error);
   }
@@ -75,53 +71,40 @@ const fetchMatches = async () => {
   }
 };
 
-// View user profile
-const viewUserProfile = (matchId) => {
-  router.push({ path: '/info', query: { matchId } });
-  localStorage.setItem('matchId', matchId);
-
-};
-const router = useRouter();
-// Create a chat room
-const createChatRoom = async (matchId) => {
-  const userObject = JSON.parse(user2);
+// Report user
+const reportUser = async (reportedUserId) => {
   try {
     const response = await axios.post(
-      'http://127.0.0.1:8000/api/chat-rooms',
-      { user_2_id: matchId, user_1_id: userObject.id },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    const chatRoomId = response.data.id; // Assuming the response contains the new chat room ID
-    console.log('Chat Room Created:', chatRoomId);
-
-    // Redirect to the chat page and pass the chat room ID as a query parameter
-    router.push({ path: '/chat', query: { roomId: chatRoomId } });
-  } catch (error) {
-    console.error('Failed to create chat room:', error);
-  }
-};
-
-// Report a user
-const reportUser = async (userId) => {
-  try {
-    await axios.post(
       'http://127.0.0.1:8000/api/report',
-      { user_id: userId },
+      {
+        user_id: userId,
+        reported_user_id: reportedUserId,
+      },
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    alert('User reported successfully.');
+    console.log('Report successful:', response.data);
   } catch (error) {
     console.error('Failed to report user:', error);
   }
 };
 
-// Fetch matches on component mount
-onMounted(fetchMatches);
+// View user profile
+const viewUserProfile = (userId) => {
+  const router = useRouter();
+  router.push(`/user/profile/${userId}`);
+};
+
+// Create chat room
+const createChatRoom = (userId) => {
+  const router = useRouter();
+  router.push(`/chat/${userId}`);
+};
+
+onMounted(() => {
+  fetchMatches();
+});
 </script>
 
 <style>

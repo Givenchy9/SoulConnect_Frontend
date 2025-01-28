@@ -138,7 +138,10 @@
       <div class="mt-4">
         <label class="inline-flex items-center">
           <input type="checkbox" v-model="form.agreeToTerms" class="form-checkbox text-koranje" />
-          <span class="ml-2">Ik ga akkoord met de algemene voorwaarden</span>
+          <span class="ml-2">
+            Ik ga akkoord met de 
+            <a href="#" @click.prevent="openTerms" class="text-koranje underline">Algemene Voorwaarden</a>
+          </span>
         </label>
         <div v-if="termsError" class="text-red-500 text-sm mt-1">{{ termsError }}</div>
       </div>
@@ -180,7 +183,6 @@
               class="hidden"
             />
             <span class="text-lg">{{ interest.name }}</span>
-
           </label>
         </div>
 
@@ -220,10 +222,6 @@
         </div>
       </div>
 
-
-
-
-
       <!-- Knoppen -->
       <div class="flex justify-between">
         <button type="button" @click="previousStep" class="px-6 py-2 bg-gray-500 font-bold rounded-lg hover:bg-gray-600">
@@ -235,40 +233,19 @@
       </div>
   </form>
 
-
+    <!-- Terms of Service Modal -->
+    <TermsOfService :isOpen="isTermsOpen" @close="closeTerms" />
   </div>
 </template>
 
-<style>
-body {
-  background-image: url("https://smarative.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511634829096-045a111727eb%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwxMTc3M3wwfDF8c2VhcmNofDd8fGZyb3N0ZWQlMjBnbGFzc3xlbnwwfHx8fDE2MzMzNTc0MTU%26ixlib%3Drb-1.2.1%26q%3D80%26w%3D2000&w=3840&q=75");
-  background-repeat: no-repeat;
-}
-
-.flex.items-center {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-label {
-  cursor: pointer;
-}
-
-input[type="checkbox"].hidden {
-  display: none;
-}
-
-.transition-all {
-  transition: all 0.3s ease-in-out;
-}
-
-</style>
-
 <script>
 import { RouterLink, useRouter } from 'vue-router';
+import TermsOfService from '@/components/TermsOfService.vue';
 
 export default {
+  components: {
+    TermsOfService
+  },
   data() {
     return {
       currentStep: 1,
@@ -295,6 +272,7 @@ export default {
       isOver18: false,
       ageError: null,
       termsError: null,
+      isTermsOpen: false,
     };
   },
   methods: {
@@ -386,7 +364,6 @@ export default {
     console.error("Error submitting form:", error);
   }
 },
-
     resetForm() {
       this.currentStep = 1;
       this.form = {
@@ -425,11 +402,40 @@ export default {
       }
       this.isOver18 = age >= 18;
     },
+    openTerms() {
+      this.isTermsOpen = true;
+    },
+    closeTerms() {
+      this.isTermsOpen = false;
+    },
   },
   async mounted() {
     await this.fetchInterests();
   },
 };
-
-
 </script>
+
+<style>
+body {
+  background-image: url("https://smarative.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511634829096-045a111727eb%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwxMTc3M3wwfDF8c2VhcmNofDd8fGZyb3N0ZWQlMjBnbGFzc3xlbnwwfHx8fDE2MzMzNTc0MTU%26ixlib%3Drb-1.2.1%26q%3D80%26w%3D2000&w=3840&q=75");
+  background-repeat: no-repeat;
+}
+
+.flex.items-center {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type="checkbox"].hidden {
+  display: none;
+}
+
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+</style>

@@ -1,36 +1,41 @@
 <template>
-  <div class="kaarten2 grid grid-cols-6 grid-rows-3 gap-4">
-    <div v-for="(user, index) in matches" :key="user.id">
-      <div class="flex-shrink-0 w-56 border hover:bg-white shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
-        <!-- Front of the Card -->
-        <img
-          :src="user.profile_image || 'https://via.placeholder.com/300x200'"
-          alt="Foto van {{ user.nickname }}"
-          class="h-40 w-40 mt-4 rounded-3xl m-auto object-cover"
-        />
-        <div class="p-4">
-          <h3 class="text-xl text-center font-semibold">{{ user.nickname }}</h3>
-          <p class="text-gray-600 text-center mt-2">{{ user.gender || 'Unknown Gender' }}</p>
-          <div class="mt-4 grid grid-cols-2 gap-2">
-            <button
-              class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-              @click="createChatRoom(user.id)"
-            >
-              Chat <i class="fa-solid fa-comments"></i>
-            </button>
-            <button
-              class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-              @click="openReportModal(user.id)"
-            >
-              Report <i class="fa-solid fa-flag"></i>
-            </button>
+  <div class="matches">
+    <p class="relative text-center item center font-bold text-3xl">Your Matches</p>
+    <div class="kaarten overflow-auto">
+      <div class="kaarten2 grid grid-cols-6 grid-rows-3 gap-4">
+        <div v-for="(user, index) in matches" :key="user.id">
+          <div class="flex-shrink-0 w-56 border hover:bg-white shadow-md rounded-lg overflow-hidden transform transition duration-700 hover:scale-105">
+            <!-- Front of the Card -->
+            <img
+              :src="user.profile_image || 'https://via.placeholder.com/300x200'"
+              alt="Foto van {{ user.nickname }}"
+              class="h-40 w-40 mt-4 rounded-3xl m-auto object-cover"
+            />
+            <div class="p-4">
+              <h3 class="text-xl text-center font-semibold">{{ user.nickname }}</h3>
+              <p class="text-gray-600 text-center mt-2">{{ user.gender || 'Unknown Gender' }}</p>
+              <div class="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                  @click="createChatRoom(user.id)"
+                >
+                  Chat <i class="fa-solid fa-comments"></i>
+                </button>
+                <button
+                  class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                  @click="openReportModal(user.id)"
+                >
+                  Report <i class="fa-solid fa-flag"></i>
+                </button>
+              </div>
+              <button
+                class="w-full mt-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
+                @click="viewUserProfile(user.id)"
+              >
+                View Profile <i class="fa-solid fa-circle-info"></i>
+              </button>
+            </div>
           </div>
-          <button
-            class="w-full mt-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
-            @click="viewUserProfile(user.id)"
-          >
-            View Profile <i class="fa-solid fa-circle-info"></i>
-          </button>
         </div>
       </div>
     </div>
@@ -53,6 +58,9 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+
+// Initialize router
+const router = useRouter();
 
 // Reactive properties
 const matches = ref([]);
@@ -108,7 +116,7 @@ const submitReport = async () => {
 
   try {
     const response = await axios.post(
-      'http://127.0.0.1:8000/api/report',
+      'http://127.0.0.1:8000/api/report-user',
       {
         user_id: userId,
         reported_user_id: reportedUserId,
@@ -126,15 +134,31 @@ const submitReport = async () => {
 };
 
 // View user profile
-const viewUserProfile = (userId) => {
-  const router = useRouter();
-  router.push(`/user/profile/${userId}`);
+const viewUserProfile = (matchId) => {
+  router.push({ path: '/profile', query: { matchId } });
+  localStorage.setItem('matchId', matchId);
 };
 
 // Create chat room
-const createChatRoom = (userId) => {
-  const router = useRouter();
-  router.push(`/chat/${userId}`);
+const createChatRoom = async (matchId) => {
+  const userObject = JSON.parse(user2);
+  try {
+    const response = await axios.post(
+      'http://127.0.0.1:8000/api/chat-rooms',
+      { user_2_id: matchId, user_1_id: userObject.id },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    const chatRoomId = response.data.id; // Assuming the response contains the new chat room ID
+    console.log('Chat Room Created:', chatRoomId);
+
+    // Redirect to the chat page and pass the chat room ID as a query parameter
+    router.push({ path: '/chat', query: { roomId: chatRoomId } });
+  } catch (error) {
+    console.error('Failed to create chat room:', error);
+  }
 };
 
 onMounted(() => {
@@ -143,27 +167,6 @@ onMounted(() => {
 </script>
 
 <style>
-@media (max-width: 800px) {
-  .matches {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    height: auto;
-  }
-  .kaarten2 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 1rem;
-  }
-}
-
-.kaarten {
-  height: auto;
-}
-
-.kaarten2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 1rem;
-}
-
 @media (max-width: 800px) {
   .matches {
     grid-template-columns: repeat(1, minmax(0, 1fr));
